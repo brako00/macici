@@ -38,11 +38,22 @@ button {
   font-size: 200%;
   border-radius: 2%;
   width: 80%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 .primary {
   background-color: $buttonBgColor;
 }
 .primary:hover {
   background-color: $buttonHoverBgColor;
+}
+
+.secondary {
+  background-color: $buttonHoverBgColor;
+}
+
+.secondary:hover {
+  background-color: $buttonBgColor;
 }
 </style>

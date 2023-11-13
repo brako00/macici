@@ -1,0 +1,49 @@
+import { render, screen } from "@testing-library/vue"
+import { createTestingPinia } from "@pinia/testing"
+import userEvent from "@testing-library/user-event"
+
+import TheCats from "@/components/TheCats.vue"
+
+import { useCatsStore } from "@/stores/cats"
+import { count } from "console"
+
+describe("TheCats", () => {
+  const renderTheCats = () => {
+    const pinia = createTestingPinia()
+    const catsStore = useCatsStore()
+
+    render(TheCats, {
+      global: {
+        plugins: [pinia]
+      }
+    })
+    return { catsStore }
+  }
+
+  it("fetches the cats", () => {
+    const { catsStore } = renderTheCats()
+    expect(catsStore.FETCH_CATS).toHaveBeenCalled()
+  })
+
+  it("displays maximum 20 cats", async () => {
+    const { catsStore } = renderTheCats()
+    catsStore.cats = Array(26).fill({})
+
+    const allCats = await screen.findAllByRole("catCard")
+    expect(allCats).toHaveLength(20)
+  })
+
+  //button is the problem
+  it.only("shows all cats after click on a button", async () => {
+    const { catsStore } = renderTheCats()
+    catsStore.cats = Array(26).fill({})
+
+    const button = await screen.findByRole("button", {
+      name: /Show more/i
+    })
+    await userEvent.click(button)
+
+    const allCats = await screen.findAllByRole("catCard")
+    expect(allCats).toHaveLength(4)
+  })
+})
