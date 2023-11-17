@@ -1,9 +1,7 @@
 <template>
-  <main>
-    <!-- <the-carousel/> -->
-
-    <the-cats />
-  </main>
+  <!-- <the-carousel/> -->
+  <img src="../../public/paw.png" />
+  <the-cats />
 </template>
 
 <script lang="ts" setup>

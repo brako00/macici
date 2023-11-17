@@ -1,7 +1,7 @@
 <template>
   <header>
     <div class="container">
-      <div class="nameContainer">Sretne šapice</div>
+      <div class="nameContainer">Meow Matchmakers</div>
       <div class="imageContainer">
         <img v-if="!loginAdmin" src="../../user.png" alt="User" />
         <img v-else src="../../setting.png" alt="Admin" />

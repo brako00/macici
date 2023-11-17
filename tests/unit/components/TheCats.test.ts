@@ -5,7 +5,6 @@ import userEvent from "@testing-library/user-event"
 import TheCats from "@/components/TheCats.vue"
 
 import { useCatsStore } from "@/stores/cats"
-import { count } from "console"
 
 describe("TheCats", () => {
   const renderTheCats = () => {
@@ -33,8 +32,7 @@ describe("TheCats", () => {
     expect(allCats).toHaveLength(20)
   })
 
-  //button is the problem
-  it.only("shows all cats after click on a button", async () => {
+  it("shows all cats after click on a button", async () => {
     const { catsStore } = renderTheCats()
     catsStore.cats = Array(26).fill({})
 
@@ -44,6 +42,6 @@ describe("TheCats", () => {
     await userEvent.click(button)
 
     const allCats = await screen.findAllByRole("catCard")
-    expect(allCats).toHaveLength(4)
+    expect(allCats).toHaveLength(26)
   })
 })

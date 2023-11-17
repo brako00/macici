@@ -1,25 +1,30 @@
 <template>
   <section>
-    <div class="catContainer">
-      <cat-card
-        v-for="cat in displayedCats"
-        :key="cat.id"
-        :cat="cat"
-        role="catCard"
-      />
-    </div>
-    <div class="buttonContainer">
-      <action-button
-        v-if="nextBatch"
-        text="Show more"
-        type="secondary"
-        @click="count++"
-      />
+    <cat-filters class="catFilters" />
+
+    <div class="contentContainer">
+      <div class="catContainer">
+        <cat-card
+          v-for="cat in displayedCats"
+          :key="cat.id"
+          :cat="cat"
+          role="catCard"
+        />
+      </div>
+      <div class="buttonContainer">
+        <action-button
+          v-if="nextBatch"
+          text="Show more"
+          type="secondary"
+          @click="count++"
+        />
+      </div>
     </div>
   </section>
 </template>
 
 <script lang="ts" setup>
+import CatFilters from "./CatFilters.vue"
 import CatCard from "./CatCard.vue"
 import ActionButton from "@/components/Shared/ActionButton.vue"
 
@@ -30,13 +35,15 @@ import { ref, computed, onMounted } from "vue"
 const catsStore = useCatsStore()
 onMounted(catsStore.FETCH_CATS)
 
+const FILTERED_CATS = computed(() => catsStore.FILTERED_CATS)
+
 //displaying first 20 cats in an array
 const count = ref(0)
 const displayedCats = computed(() => {
-  const batchOfCats = 2
+  const batchOfCats = 20
   const lastCatIndex = count.value * batchOfCats + batchOfCats
 
-  const displayingCats = catsStore.cats.slice(0, lastCatIndex)
+  const displayingCats = FILTERED_CATS.value.slice(0, lastCatIndex)
 
   return displayingCats
 })
@@ -44,42 +51,61 @@ const displayedCats = computed(() => {
 //show more button visible or not
 const nextBatch = computed(() => {
   const currentLength = displayedCats.value.length
-  const maxLength = catsStore.cats.length
+  const maxLength = FILTERED_CATS.value.length
 
   return currentLength < maxLength ? true : false
 })
 </script>
 
 <style lang="scss" scoped>
+section {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  flex-wrap: nowrap;
+  .catFilters {
+    width: 250px;
+    position: sticky;
+    top: 0;
+  }
+  .contentContainer {
+    flex: 1 1 auto;
+  }
+  .catContainer {
+    margin: 20px;
+    display: grid;
+    place-items: center;
+    row-gap: 30px;
+  }
+}
 .buttonContainer {
   margin-top: 50px;
   display: flex;
   justify-content: center;
 }
-.catContainer {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  place-items: center;
-  row-gap: 30px;
-}
 
-@media only screen and (min-width: 2200px) {
+@media only screen and (min-width: 2500px) {
   .catContainer {
     grid-template-columns: repeat(5, 1fr);
   }
 }
+@media only screen and (max-width: 2500px) {
+  .catContainer {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
 
-@media only screen and (max-width: 1800px) {
+@media only screen and (max-width: 2050px) {
   .catContainer {
     grid-template-columns: repeat(3, 1fr);
   }
 }
-@media only screen and (max-width: 1400px) {
+@media only screen and (max-width: 1600px) {
   .catContainer {
     grid-template-columns: repeat(2, 1fr);
   }
 }
-@media only screen and (max-width: 1000px) {
+@media only screen and (max-width: 1150px) {
   .catContainer {
     grid-template-columns: repeat(1, 1fr);
   }
