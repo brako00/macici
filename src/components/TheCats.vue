@@ -1,6 +1,8 @@
 <template>
   <section>
-    <cat-filters class="catFilters" />
+    <div>
+      <cat-filters class="catFilters" />
+    </div>
 
     <div class="contentContainer">
       <div class="catContainer">
@@ -66,7 +68,7 @@ section {
   .catFilters {
     width: 250px;
     position: sticky;
-    top: 0;
+    top: 60px;
   }
   .contentContainer {
     flex: 1 1 auto;

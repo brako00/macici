@@ -9,10 +9,13 @@ import { useUserStore } from "@/stores/user"
 
 export const useCatsStore = defineStore("cats", () => {
   const cats = ref(<Cat[]>[])
+  const YOUNGEST_CATS = ref(<Cat[]>[])
 
   const FETCH_CATS = async () => {
     const recievedCats = await getCats()
     cats.value = recievedCats.sort((a, b) => a.age - b.age)
+    YOUNGEST_CATS.value = cats.value.slice(0, 4)
+    console.log("store")
   }
 
   const selectedYoungerThan6 = ref<number[]>([])
@@ -112,6 +115,7 @@ export const useCatsStore = defineStore("cats", () => {
     nameSearchTerm,
     UPDATE_NAME_SEARCH_TERM,
     INCLUDE_BY_NAME,
-    SORTED_CATS
+    SORTED_CATS,
+    YOUNGEST_CATS
   }
 })
