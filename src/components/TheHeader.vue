@@ -30,6 +30,7 @@ header {
     display: flex;
     justify-content: space-between;
     flex-wrap: nowrap;
+    z-index: 1;
     .nameContainer {
       padding: auto;
       margin-left: 15px;

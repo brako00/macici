@@ -15,7 +15,6 @@ export const useCatsStore = defineStore("cats", () => {
     const recievedCats = await getCats()
     cats.value = recievedCats.sort((a, b) => a.age - b.age)
     YOUNGEST_CATS.value = cats.value.slice(0, 4)
-    console.log("store")
   }
 
   const selectedYoungerThan6 = ref<number[]>([])

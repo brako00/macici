@@ -1,118 +1,220 @@
 <template>
-  <section class="allCats">
-    <div v-for="cat in YOUNGEST_CATS" :key="cat.id">
-      <div class="carouselCat">
-        <img :src="cat.image" />
-        <div class="catName">
-          {{ cat.name }}
+  <section>
+    <div class="allCats">
+      <div v-for="cat in carouselCats" :key="cat.id">
+        <div
+          class="carouselCat"
+          :class="{
+            activeCat: carouselCats.indexOf(cat) === activeIndex,
+            subActiveCat: carouselCats.indexOf(cat) !== activeIndex
+          }"
+        >
+          <font-awesome-icon
+            v-if="carouselCats.indexOf(cat) === activeIndex"
+            :icon="['fas', 'chevron-circle-left']"
+            class="iconLeft"
+            @click="(direction = false), goingLeft()"
+          />
+          <font-awesome-icon
+            v-if="carouselCats.indexOf(cat) === activeIndex"
+            :icon="['fas', 'chevron-circle-right']"
+            class="iconRight"
+            @click="(direction = true), goingRight()"
+          />
+          <img :src="cat.image" />
+          <div class="catName">
+            {{ cat.name }}
+          </div>
         </div>
       </div>
     </div>
-    <font-awesome-icon :icon="['fas', 'chevron-circle-left']" class="icon" />
-    <font-awesome-icon :icon="['fas', 'chevron-circle-right']" class="icon" />
   </section>
 </template>
 
 <script lang="ts" setup>
 import { useCatsStore } from "@/stores/cats"
-import { computed, onMounted } from "vue"
+import { ref, onMounted, onBeforeUnmount } from "vue"
+import type { Cat } from "@/api/types"
 
 const catsStore = useCatsStore()
-onMounted(() => {
-  console.log("nesto", catsStore.YOUNGEST_CATS)
 
-  console.log(YOUNGEST_CATS.value)
+const activeIndex = ref<number>(1)
+const activeIndexYoungestCats = ref<number>(0)
+const carouselCats = ref<Cat[]>([])
+
+const interval = ref<ReturnType<typeof setInterval>>()
+const lengthOfInterval = 3000
+const direction = ref<boolean>(true)
+
+onMounted(async () => {
+  await catsStore.FETCH_CATS()
+
+  carouselCats.value.push(
+    catsStore.YOUNGEST_CATS[0],
+    catsStore.YOUNGEST_CATS[1]
+  )
+  carouselCats.value.unshift(catsStore.YOUNGEST_CATS[3])
+
+  pauseInterval()
+  continueInterval()
 })
 
-const YOUNGEST_CATS = computed(() => catsStore.YOUNGEST_CATS)
+onBeforeUnmount(() => {
+  pauseInterval()
+})
 
-let slideIndex = 1
-
-// Next/previous controls
-function plusSlides(n: number) {
-  showSlides((slideIndex += n))
+const pauseInterval = () => {
+  clearInterval(interval.value)
 }
 
-// Thumbnail image controls
-function currentSlide(n: number) {
-  showSlides((slideIndex = n))
+const continueInterval = () => {
+  interval.value = setInterval(displayedCats, lengthOfInterval)
 }
 
-const showSlides = (n: number) => {
-  // let slides = YOUNGEST_CATS
-  YOUNGEST_CATS.value[0]
-  // if (n > slides.length) {
-  //   slideIndex = 1
-  // }
-  // if (n < 1) {
-  //   slideIndex = slides.length
-  // }
-  // for (let i = 0; i < slides.length; i++) {
-  //   slides[i].classList.add("displayNone")
-  // }
-  // slides[slideIndex - 1].className = "displayBlock"
+const stoppingOnHover = (active: Element) => {
+  console.log("active", active)
+  active.addEventListener("mouseover", () => {
+    pauseInterval()
+  })
+  active.addEventListener("mouseout", () => {
+    continueInterval()
+  })
 }
-showSlides(slideIndex)
+
+const displayedCats = () => {
+  if (direction.value === true) {
+    goingRight()
+    const active = document.querySelectorAll(".subActiveCat")[1]
+    stoppingOnHover(active)
+  } else {
+    goingLeft()
+    const active = document.querySelectorAll(".subActiveCat")[0]
+    stoppingOnHover(active)
+  }
+}
+
+const goingRight = () => {
+  activeIndexYoungestCats.value++
+  carouselCats.value.shift()
+
+  if (activeIndexYoungestCats.value === catsStore.YOUNGEST_CATS.length - 1)
+    carouselCats.value.push(catsStore.YOUNGEST_CATS[0])
+  else if (activeIndexYoungestCats.value > catsStore.YOUNGEST_CATS.length - 1) {
+    activeIndexYoungestCats.value = 0
+    carouselCats.value.push(
+      catsStore.YOUNGEST_CATS[activeIndexYoungestCats.value + 1]
+    )
+  } else
+    carouselCats.value.push(
+      catsStore.YOUNGEST_CATS[activeIndexYoungestCats.value + 1]
+    )
+
+  if (activeIndexYoungestCats.value < 0) {
+    activeIndexYoungestCats.value = catsStore.YOUNGEST_CATS.length - 1
+  }
+}
+
+const goingLeft = () => {
+  activeIndexYoungestCats.value--
+  carouselCats.value.pop()
+
+  if (activeIndexYoungestCats.value === 0)
+    carouselCats.value.unshift(
+      catsStore.YOUNGEST_CATS[catsStore.YOUNGEST_CATS.length - 1]
+    )
+  else if (activeIndexYoungestCats.value < 0) {
+    activeIndexYoungestCats.value = catsStore.YOUNGEST_CATS.length - 1
+    carouselCats.value.unshift(
+      catsStore.YOUNGEST_CATS[activeIndexYoungestCats.value - 1]
+    )
+  } else
+    carouselCats.value.unshift(
+      catsStore.YOUNGEST_CATS[activeIndexYoungestCats.value - 1]
+    )
+
+  if (activeIndexYoungestCats.value > catsStore.YOUNGEST_CATS.length - 1) {
+    activeIndexYoungestCats.value = 0
+  }
+}
 </script>
 
 <style lang="scss">
-.displayNone {
+@import "@/assets/globalComponents.scss";
+.carouselCat {
   display: none;
+  padding: 15px;
+}
+// .activeCat {
+//   animation-name: move;
+//   animation-duration: 1.5s;
+//   animation-timing-function: ease-in-out;
+// }
+
+// @keyframes move {
+//   from {
+//     left: 0px;
+//   }
+//   to {
+//     left: 50px;
+//   }
+// }
+
+.activeCat {
+  display: block;
+  position: relative;
 }
 
-.displayBlock {
-  display: "block";
+.activeCat:hover {
+  scale: 1.07;
 }
+
+.subActiveCat {
+  display: block;
+  filter: blur(8px);
+}
+
 .allCats {
-  // display: flex;
-  // flex-direction: row;
-  // overflow: hidden;
-  .carouselCat {
-    // display: flex;
-    // justify-content: center;
-    // align-items: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
 
-    // display: none;
-
-    img {
-      height: 500px;
-      width: 700px;
-      object-fit: fill;
-    }
+  img {
+    height: 500px;
+    width: 700px;
+    object-fit: fill;
+    border-radius: 2%;
   }
 }
-.icon {
+
+.iconRight,
+.iconLeft {
   cursor: pointer;
-  top: 50%;
   height: 50px;
   width: 50px;
 
-  padding: 16px;
-
-  transition: 0.6s ease;
   border-radius: 0 3px 3px 0;
   user-select: none;
+  position: absolute;
+  bottom: 45%;
+  color: $bgColor;
 }
+
+.iconLeft {
+  left: 0px;
+}
+
+.iconRight {
+  right: 0px;
+}
+
 .catName {
   color: #f2f2f2;
-  font-size: 15px;
+  font-family: $secondaryFontFamily;
+  font-size: 50px;
   padding: 8px 12px;
   position: absolute;
   bottom: 8px;
-  width: 100%;
-  text-align: center;
+  text-shadow: 2px 2px black;
 }
-
-// .fade {
-//   animation-name: fade;
-//   animation-duration: 1.5s;
-// }
-// @keyframes fade {
-//   from {
-//     opacity: 0.4;
-//   }
-//   to {
-//     opacity: 1;
-//   }
-// }
 </style>
