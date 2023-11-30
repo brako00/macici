@@ -35,7 +35,9 @@ const buttonClass = computed(() => {
 @import "@/assets/globalComponents.scss";
 
 button {
+  font-family: $primaryFontFamily;
   font-size: 200%;
+  font-weight: 600;
   border-radius: 2%;
   width: 80%;
   display: flex;

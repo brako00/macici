@@ -2,12 +2,16 @@
   <div class="filterContainer">
     <div class="searchName">
       <h2>Search by name:</h2>
-      <input
-        v-model.trim="nameSearchTerm"
-        type="text"
-        placeholder="Mrvica"
-        class="textInput"
-      />
+      <div class="inputContainer">
+        <input
+          v-model.trim="nameSearchTerm"
+          type="text"
+          placeholder="e.g. Mrvica"
+          class="textInput"
+        />
+
+        <font-awesome-icon :icon="['fas', 'search']" class="icon" />
+      </div>
     </div>
 
     <div class="sortBy">
@@ -43,14 +47,14 @@
     <div class="filters">
       <h2>Filters:</h2>
       <check-box
-        :action="catsStore.ADD_YOUNGER_THAN_6"
+        :action="userStore.ADD_YOUNGER_THAN_6"
         value="Younger than 6 months"
       />
       <check-box
-        :action="catsStore.ADD_YOUNGER_THAN_10"
+        :action="userStore.ADD_YOUNGER_THAN_10"
         value="Younger than 10 months"
       />
-      <check-box :action="catsStore.ADD_BLACK_CATS" value="Black fur color" />
+      <check-box :action="userStore.ADD_BLACK_CATS" value="Black fur color" />
     </div>
   </div>
 </template>
@@ -59,20 +63,18 @@
 import RadioButton from "@/components/Shared/RadioButton.vue"
 import CheckBox from "@/components/Shared/CheckBox.vue"
 
-import { useCatsStore } from "@/stores/cats"
 import { useUserStore } from "@/stores/user"
 import { computed } from "vue"
 
 const userStore = useUserStore()
-const catsStore = useCatsStore()
 
 //search by name
 const nameSearchTerm = computed({
   get() {
-    return catsStore.nameSearchTerm
+    return userStore.nameSearchTerm
   },
   set(name: string) {
-    catsStore.UPDATE_NAME_SEARCH_TERM(name)
+    userStore.UPDATE_NAME_SEARCH_TERM(name)
   }
 })
 </script>
@@ -80,24 +82,40 @@ const nameSearchTerm = computed({
 <style lang="scss" scoped>
 @import "@/assets/globalComponents.scss";
 .filterContainer {
+  font-family: $primaryFontFamily;
   .sortBy,
   .sortType,
   .filters {
     display: flex;
     flex-direction: column;
   }
-  .textInput {
+  .inputContainer {
     height: 35px;
     width: 200px;
-    line-height: 80%;
-    font-size: large;
+
     box-sizing: border-box;
     border: 2px solid black;
     border-radius: 4px;
+
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+  }
+  .inputContainer:focus-within {
+    border: 4px solid $bgColor;
+  }
+  .textInput {
+    width: 100%;
+    line-height: 80%;
+    font-size: large;
+
+    border: none;
     outline: none;
   }
-  .textInput:focus {
-    border: 4px solid $bgColor;
+
+  .icon {
+    padding: 4px;
   }
 }
 </style>

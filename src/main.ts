@@ -6,7 +6,8 @@ import { library } from "@fortawesome/fontawesome-svg-core"
 import {
   faSearch,
   faChevronCircleLeft,
-  faChevronCircleRight
+  faChevronCircleRight,
+  faClose
 } from "@fortawesome/free-solid-svg-icons"
 
 import App from "./App.vue"
@@ -16,6 +17,7 @@ import router from "@/router"
 library.add(faSearch)
 library.add(faChevronCircleLeft)
 library.add(faChevronCircleRight)
+library.add(faClose)
 
 const pinia = createPinia()
 

@@ -6,7 +6,7 @@ describe("TheHeader", () => {
   it("displays name of the page", () => {
     render(TheHeader)
 
-    const pageName = screen.getByText("Sretne šapice")
+    const pageName = screen.getByText("Meow Matchmakers")
 
     expect(pageName).toBeInTheDocument()
   })

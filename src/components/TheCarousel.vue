@@ -8,6 +8,7 @@
             activeCat: carouselCats.indexOf(cat) === activeIndex,
             subActiveCat: carouselCats.indexOf(cat) !== activeIndex
           }"
+          @click="openModal"
         >
           <font-awesome-icon
             v-if="carouselCats.indexOf(cat) === activeIndex"
@@ -15,26 +16,40 @@
             class="iconLeft"
             @click="(direction = false), goingLeft()"
           />
+
           <font-awesome-icon
             v-if="carouselCats.indexOf(cat) === activeIndex"
             :icon="['fas', 'chevron-circle-right']"
             class="iconRight"
             @click="(direction = true), goingRight()"
           />
+
           <img :src="cat.image" />
           <div class="catName">
             {{ cat.name }}
           </div>
         </div>
       </div>
+
+      <modal-cat
+        v-if="showModalCat"
+        v-on-click-outside="closeModal"
+        :cat="carouselCats[1]"
+        @close="closeModal"
+      />
     </div>
   </section>
 </template>
 
 <script lang="ts" setup>
+import ModalCat from "@/components/ModalCat.vue"
 import { useCatsStore } from "@/stores/cats"
 import { ref, onMounted, onBeforeUnmount } from "vue"
 import type { Cat } from "@/api/types"
+
+import { vOnClickOutside } from "@vueuse/components"
+
+const showModalCat = ref<boolean>(false)
 
 const catsStore = useCatsStore()
 
@@ -49,6 +64,7 @@ const direction = ref<boolean>(true)
 onMounted(async () => {
   await catsStore.FETCH_CATS()
 
+  //creates array of 3 elements with active cat in the middle
   carouselCats.value.push(
     catsStore.YOUNGEST_CATS[0],
     catsStore.YOUNGEST_CATS[1]
@@ -71,8 +87,9 @@ const continueInterval = () => {
   interval.value = setInterval(displayedCats, lengthOfInterval)
 }
 
+//stopping auto changing images in carousel on hover
 const stoppingOnHover = (active: Element) => {
-  console.log("active", active)
+  // console.log("active", active)
   active.addEventListener("mouseover", () => {
     pauseInterval()
   })
@@ -81,18 +98,7 @@ const stoppingOnHover = (active: Element) => {
   })
 }
 
-const displayedCats = () => {
-  if (direction.value === true) {
-    goingRight()
-    const active = document.querySelectorAll(".subActiveCat")[1]
-    stoppingOnHover(active)
-  } else {
-    goingLeft()
-    const active = document.querySelectorAll(".subActiveCat")[0]
-    stoppingOnHover(active)
-  }
-}
-
+//changing image to the right one in array
 const goingRight = () => {
   activeIndexYoungestCats.value++
   carouselCats.value.shift()
@@ -114,6 +120,7 @@ const goingRight = () => {
   }
 }
 
+//changing image to the left one in array
 const goingLeft = () => {
   activeIndexYoungestCats.value--
   carouselCats.value.pop()
@@ -136,10 +143,32 @@ const goingLeft = () => {
     activeIndexYoungestCats.value = 0
   }
 }
+
+const displayedCats = () => {
+  if (direction.value === true) {
+    goingRight()
+    const active = document.querySelectorAll(".subActiveCat")[1]
+    stoppingOnHover(active)
+  } else {
+    goingLeft()
+    const active = document.querySelectorAll(".subActiveCat")[0]
+    stoppingOnHover(active)
+  }
+}
+
+const openModal = () => {
+  showModalCat.value = true
+  pauseInterval()
+}
+
+const closeModal = () => {
+  showModalCat.value = false
+}
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 @import "@/assets/globalComponents.scss";
+
 .carouselCat {
   display: none;
   padding: 15px;

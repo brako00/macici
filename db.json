@@ -2,13 +2,15 @@
   "cats": [
     {
       "id": 1,
+      "adopted": false,
       "name": "Amon",
       "color": "Gray",
-      "age": 9,
+      "age": 2,
       "image": "https://images.pexels.com/photos/1472999/pexels-photo-1472999.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
     },
     {
       "id": 2,
+      "adopted": false,
       "name": "Bleki",
       "color": "Black",
       "age": 4,
@@ -16,13 +18,15 @@
     },
     {
       "id": 3,
+      "adopted": false,
       "name": "Deki",
       "color": "Tabby",
-      "age": 10,
+      "age": 3,
       "image": "https://images.pexels.com/photos/479009/pexels-photo-479009.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
     },
     {
       "id": 4,
+      "adopted": false,
       "name": "Domino",
       "color": "Black",
       "age": 6,
@@ -30,6 +34,7 @@
     },
     {
       "id": 5,
+      "adopted": false,
       "name": "Feliks",
       "color": "Calico",
       "age": 5,
@@ -37,20 +42,23 @@
     },
     {
       "id": 6,
+      "adopted": false,
       "name": "Fluffy",
       "color": "Yellow",
-      "age": 1,
+      "age": 10,
       "image": "https://images.pexels.com/photos/1381112/pexels-photo-1381112.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
     },
     {
       "id": 7,
+      "adopted": false,
       "name": "Gizmo",
       "color": "Point",
-      "age": 1,
+      "age": 9,
       "image": "https://images.pexels.com/photos/596590/pexels-photo-596590.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
     },
     {
       "id": 8,
+      "adopted": false,
       "name": "Gigi",
       "color": "Yellow",
       "age": 2,
@@ -58,6 +66,7 @@
     },
     {
       "id": 9,
+      "adopted": false,
       "name": "Figaro",
       "color": "Black",
       "age": 3,
@@ -65,6 +74,7 @@
     },
     {
       "id": 10,
+      "adopted": false,
       "name": "Hobit",
       "color": "Tortoiseshell",
       "age": 2,
@@ -72,13 +82,15 @@
     },
     {
       "id": 11,
+      "adopted": false,
       "name": "Kiki",
       "color": "Yellow",
-      "age": 8,
+      "age": 4,
       "image": "https://images.pexels.com/photos/1552613/pexels-photo-1552613.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
     },
     {
       "id": 12,
+      "adopted": false,
       "name": "Indigo",
       "color": "Point",
       "age": 9,
@@ -86,6 +98,7 @@
     },
     {
       "id": 13,
+      "adopted": false,
       "name": "Klupko",
       "color": "Yellow",
       "age": 7,
@@ -93,6 +106,7 @@
     },
     {
       "id": 14,
+      "adopted": false,
       "name": "Leo",
       "color": "Tabby",
       "age": 6,
@@ -100,6 +114,7 @@
     },
     {
       "id": 15,
+      "adopted": false,
       "name": "Lord",
       "color": "Tabby",
       "age": 8,
@@ -107,20 +122,23 @@
     },
     {
       "id": 16,
+      "adopted": false,
       "name": "Medo",
       "color": "White",
-      "age": 2,
+      "age": 7,
       "image": "https://images.pexels.com/photos/1383397/pexels-photo-1383397.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
     },
     {
       "id": 17,
+      "adopted": false,
       "name": "Micko",
       "color": "Gray",
-      "age": 1,
+      "age": 11,
       "image": "https://images.pexels.com/photos/978555/pexels-photo-978555.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
     },
     {
       "id": 18,
+      "adopted": false,
       "name": "Miško",
       "color": "White",
       "age": 3,
@@ -128,13 +146,15 @@
     },
     {
       "id": 19,
+      "adopted": false,
       "name": "Njuškica",
       "color": "Tabby",
-      "age": 10,
+      "age": 2,
       "image": "https://images.pexels.com/photos/980457/pexels-photo-980457.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
     },
     {
       "id": 20,
+      "adopted": false,
       "name": "Onix",
       "color": "Point",
       "age": 11,
@@ -142,6 +162,7 @@
     },
     {
       "id": 21,
+      "adopted": false,
       "name": "Oskar",
       "color": "Gray",
       "age": 11,
@@ -149,6 +170,7 @@
     },
     {
       "id": 22,
+      "adopted": false,
       "name": "Piksi",
       "color": "Beige",
       "age": 12,
@@ -156,6 +178,7 @@
     },
     {
       "id": 23,
+      "adopted": false,
       "name": "Sivko",
       "color": "Gray",
       "age": 12,
@@ -163,13 +186,15 @@
     },
     {
       "id": 24,
+      "adopted": false,
       "name": "Simba",
       "color": "Beige",
-      "age": 7,
+      "age": 3,
       "image": "https://images.pexels.com/photos/2581153/pexels-photo-2581153.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
     },
     {
       "id": 25,
+      "adopted": false,
       "name": "Uško",
       "color": "Point",
       "age": 4,
@@ -177,13 +202,15 @@
     },
     {
       "id": 26,
+      "adopted": false,
       "name": "Zeus",
       "color": "White",
-      "age": 5,
+      "age": 1,
       "image": "https://images.pexels.com/photos/171227/pexels-photo-171227.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
     },
     {
       "id": 27,
+      "adopted": false,
       "name": "Žuti",
       "color": "Yellow",
       "age": 9,
@@ -191,20 +218,23 @@
     },
     {
       "id": 28,
+      "adopted": false,
       "name": "Sivka",
       "color": "Gray",
-      "age": 8,
+      "age": 6,
       "image": "https://images.pexels.com/photos/127028/pexels-photo-127028.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
     },
     {
       "id": 29,
+      "adopted": false,
       "name": "Šapa",
       "color": "Tabby",
-      "age": 7,
+      "age": 2,
       "image": "https://images.pexels.com/photos/209800/pexels-photo-209800.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
     },
     {
       "id": 30,
+      "adopted": false,
       "name": "Ruby",
       "color": "Point",
       "age": 12,
@@ -212,6 +242,7 @@
     },
     {
       "id": 31,
+      "adopted": false,
       "name": "Nora",
       "color": "Black",
       "age": 11,
@@ -219,13 +250,15 @@
     },
     {
       "id": 32,
+      "adopted": false,
       "name": "Nera",
       "color": "Black",
-      "age": 10,
+      "age": 1,
       "image": "https://images.pexels.com/photos/8075319/pexels-photo-8075319.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
     },
     {
       "id": 33,
+      "adopted": false,
       "name": "Mrvica",
       "color": "Calico",
       "age": 4,
@@ -233,6 +266,7 @@
     },
     {
       "id": 34,
+      "adopted": false,
       "name": "Miki",
       "color": "White",
       "age": 5,
@@ -240,27 +274,31 @@
     },
     {
       "id": 35,
+      "adopted": false,
       "name": "Mica",
       "color": "Yellow",
-      "age": 6,
+      "age": 1,
       "image": "https://images.pexels.com/photos/1870376/pexels-photo-1870376.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
     },
     {
       "id": 36,
+      "adopted": false,
       "name": "Luna",
       "color": "Gray",
-      "age": 2,
+      "age": 1,
       "image": "https://images.pexels.com/photos/2061057/pexels-photo-2061057.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
     },
     {
       "id": 37,
+      "adopted": false,
       "name": "Flekica",
       "color": "Yellow",
-      "age": 3,
+      "age": 1,
       "image": "https://images.pexels.com/photos/290164/pexels-photo-290164.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
     },
     {
       "id": 38,
+      "adopted": false,
       "name": "Loki",
       "color": "Calico",
       "age": 4,
@@ -268,6 +306,7 @@
     },
     {
       "id": 39,
+      "adopted": false,
       "name": "Groot",
       "color": "Tortoiseshell",
       "age": 8,
@@ -275,9 +314,10 @@
     },
     {
       "id": 40,
+      "adopted": false,
       "name": "Legolas",
       "color": "White",
-      "age": 7,
+      "age": 1,
       "image": "https://images.pexels.com/photos/1444321/pexels-photo-1444321.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
     }
   ]

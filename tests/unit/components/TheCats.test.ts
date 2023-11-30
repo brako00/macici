@@ -26,7 +26,8 @@ describe("TheCats", () => {
 
   it("displays maximum 20 cats", async () => {
     const { catsStore } = renderTheCats()
-    catsStore.cats = Array(26).fill({})
+    //@ts-expect-error Getters are readonly
+    catsStore.FILTERED_CATS = Array(26).fill({})
 
     const allCats = await screen.findAllByRole("catCard")
     expect(allCats).toHaveLength(20)
@@ -34,7 +35,8 @@ describe("TheCats", () => {
 
   it("shows all cats after click on a button", async () => {
     const { catsStore } = renderTheCats()
-    catsStore.cats = Array(26).fill({})
+    //@ts-expect-error Getters are readonly
+    catsStore.FILTERED_CATS = Array(26).fill({})
 
     const button = await screen.findByRole("button", {
       name: /Show more/i
