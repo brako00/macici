@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div @click="props.action">
     <input
       :id="props.value"
       :value="/props.value/i"

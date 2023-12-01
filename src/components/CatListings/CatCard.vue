@@ -4,7 +4,7 @@
       <img :src="cat.image" alt="Image of the cat" />
 
       <div class="catInfo">
-        <h2>{{ cat.name }}</h2>
+        <h2 class="catName">{{ cat.name }}</h2>
         <div class="textContainer">
           <span>
             <h4>Fur color:</h4>
@@ -17,7 +17,22 @@
         </div>
       </div>
 
-      <action-button text="Adopt" type="primary" />
+      <action-button
+        v-if="!cat.adopted"
+        text="Adopt"
+        type="primary"
+        class="adoptButton"
+        @click="openModal"
+      />
+
+      <h2 v-else class="adoptedLine">Adopted</h2>
+
+      <adopt-modal
+        v-if="showAdoptModal"
+        v-on-click-outside="closeModal"
+        :cat="cat"
+        @close="closeModal"
+      />
     </div>
   </div>
 </template>
@@ -26,6 +41,12 @@
 import ActionButton from "@/components/Shared/ActionButton.vue"
 import type { PropType } from "vue"
 import type { Cat } from "@/api/types"
+import { ref } from "vue"
+import AdoptModal from "@/components/Shared/AdoptModal.vue"
+
+import { vOnClickOutside } from "@vueuse/components"
+
+const showAdoptModal = ref<boolean>(false)
 
 defineProps({
   cat: {
@@ -33,6 +54,14 @@ defineProps({
     required: true
   }
 })
+
+const openModal = () => {
+  showAdoptModal.value = true
+}
+
+const closeModal = () => {
+  showAdoptModal.value = false
+}
 </script>
 
 <style lang="scss" scoped>
@@ -52,7 +81,21 @@ defineProps({
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: flex-start;
+  justify-content: space-between;
+
+  .adoptButton {
+    margin-bottom: 15px;
+  }
+  .adoptedLine {
+    background-color: $buttonBgColor;
+    font-size: 200%;
+    margin: 0;
+    font-family: $secondaryFontFamily;
+    text-align: center;
+    width: 100%;
+    position: relative;
+    bottom: 0;
+  }
 
   img {
     height: 300px;
@@ -68,7 +111,7 @@ defineProps({
     width: 100%;
   }
 
-  h2 {
+  .catName {
     font-size: 200%;
     margin: 5px 0;
     font-family: $secondaryFontFamily;

@@ -25,7 +25,7 @@ header {
     top: 0px;
     left: 0px;
     width: 100%;
-    height: 55px;
+    height: 70px;
     background-color: $bgColor;
     display: flex;
     justify-content: space-between;
@@ -36,6 +36,8 @@ header {
       margin-left: 15px;
       font-size: 200%;
       font-family: $secondaryFontFamily;
+      display: flex;
+      align-items: center;
     }
     .imageContainer {
       padding: auto;

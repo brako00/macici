@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div @click="handleChange(props.name)">
     <input
       :id="props.value"
       :checked="isChecked"

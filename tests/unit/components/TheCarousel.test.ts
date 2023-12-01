@@ -2,7 +2,7 @@ import { render, screen } from "@testing-library/vue"
 import { createTestingPinia } from "@pinia/testing"
 import { userEvent } from "@testing-library/user-event"
 
-import TheCarousel from "@/components/TheCarousel.vue"
+import TheCarousel from "@/components/Carousel/TheCarousel.vue"
 
 import { useCatsStore } from "@/stores/cats"
 

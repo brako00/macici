@@ -13,6 +13,11 @@
           role="catCard"
         />
       </div>
+      <div v-if="isErrorMessage" class="errorMessage">
+        <h1>/ᐠ｡ꞈ｡ᐟ\</h1>
+        <h1>Unfortunatelly we can't find your desired cat</h1>
+        <h2>Maybe you could try changing some filters</h2>
+      </div>
       <div class="buttonContainer">
         <action-button
           v-if="nextBatch"
@@ -26,8 +31,8 @@
 </template>
 
 <script lang="ts" setup>
-import CatFilters from "./CatFilters.vue"
-import CatCard from "./CatCard.vue"
+import CatFilters from "@/components/CatListings/CatFilters.vue"
+import CatCard from "@/components/CatListings/CatCard.vue"
 import ActionButton from "@/components/Shared/ActionButton.vue"
 
 import { useCatsStore } from "@/stores/cats"
@@ -38,6 +43,13 @@ const catsStore = useCatsStore()
 onMounted(catsStore.FETCH_CATS)
 
 const FILTERED_CATS = computed(() => catsStore.FILTERED_CATS)
+
+const isErrorMessage = computed(() => {
+  const lengthFilteredCats = ref(0)
+  lengthFilteredCats.value = FILTERED_CATS.value.length
+  if (lengthFilteredCats.value === 0) return true
+  else return false
+})
 
 //displaying first 20 cats in an array
 const count = ref(0)
@@ -60,6 +72,8 @@ const nextBatch = computed(() => {
 </script>
 
 <style lang="scss" scoped>
+@import "@/assets/globalComponents.scss";
+
 section {
   display: flex;
   flex-direction: row;
@@ -68,7 +82,7 @@ section {
   .catFilters {
     width: 250px;
     position: sticky;
-    top: 60px;
+    top: 80px;
   }
   .contentContainer {
     flex: 1 1 auto;
@@ -79,6 +93,15 @@ section {
     place-items: center;
     row-gap: 30px;
   }
+}
+.errorMessage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  font-family: $primaryFontFamily;
+  font-size: large;
 }
 .buttonContainer {
   margin-top: 50px;

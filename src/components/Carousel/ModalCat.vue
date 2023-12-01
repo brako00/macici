@@ -21,15 +21,39 @@
         </span>
       </div>
 
-      <action-button text="Adopt" type="primary" class="adoptButton" />
+      <action-button
+        text="Adopt"
+        type="primary"
+        class="adoptButton"
+        @click="openAdoptModal"
+      />
+
+      <adopt-modal
+        v-if="showAdoptModal"
+        v-on-click-outside="closeAdoptModal"
+        :cat="cat"
+        @close="$emit('close'), closeAdoptModal"
+      />
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
+import AdoptModal from "@/components/Shared/AdoptModal.vue"
 import ActionButton from "@/components/Shared/ActionButton.vue"
 import type { PropType } from "vue"
 import type { Cat } from "@/api/types"
+import { ref } from "vue"
+
+const showAdoptModal = ref<boolean>(false)
+
+const openAdoptModal = () => {
+  showAdoptModal.value = true
+}
+
+const closeAdoptModal = () => {
+  showAdoptModal.value = false
+}
 
 defineProps({
   cat: {

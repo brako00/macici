@@ -55,7 +55,7 @@ export const useCatsStore = defineStore("cats", () => {
         return cats.value.sort((a, b) => {
           const nameA = a.name.toLowerCase()
           const nameB = b.name.toLowerCase()
-          return nameA > nameB ? -1 : nameA < nameB ? 1 : 0
+          return nameA < nameB ? -1 : nameA > nameB ? 1 : 0
         })
       }
     } else {
@@ -65,7 +65,7 @@ export const useCatsStore = defineStore("cats", () => {
         return cats.value.sort((a, b) => {
           const nameA = a.name.toLowerCase()
           const nameB = b.name.toLowerCase()
-          return nameA < nameB ? -1 : nameA > nameB ? 1 : 0
+          return nameA > nameB ? -1 : nameA < nameB ? 1 : 0
         })
       }
     }

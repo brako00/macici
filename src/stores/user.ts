@@ -1,5 +1,6 @@
 import { defineStore } from "pinia"
 import { ref } from "vue"
+import type { Cat } from "@/api/types"
 
 export const useUserStore = defineStore("user", () => {
   const ageChecked = ref<boolean>(true)
@@ -33,6 +34,10 @@ export const useUserStore = defineStore("user", () => {
     nameSearchTerm.value = term
   }
 
+  const UPDATE_ADOPTED = (cat: Cat) => {
+    cat.adopted = true
+  }
+
   return {
     ageChecked,
     nameChecked,
@@ -45,6 +50,7 @@ export const useUserStore = defineStore("user", () => {
     ADD_YOUNGER_THAN_6,
     ADD_YOUNGER_THAN_10,
     ADD_BLACK_CATS,
-    UPDATE_NAME_SEARCH_TERM
+    UPDATE_NAME_SEARCH_TERM,
+    UPDATE_ADOPTED
   }
 })

@@ -42,7 +42,7 @@
 </template>
 
 <script lang="ts" setup>
-import ModalCat from "@/components/ModalCat.vue"
+import ModalCat from "@/components/Carousel/ModalCat.vue"
 import { useCatsStore } from "@/stores/cats"
 import { ref, onMounted, onBeforeUnmount } from "vue"
 import type { Cat } from "@/api/types"
@@ -203,6 +203,7 @@ const closeModal = () => {
 }
 
 .allCats {
+  padding-top: 15px;
   display: flex;
   justify-content: center;
   align-items: center;

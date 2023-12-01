@@ -91,7 +91,7 @@ const nameSearchTerm = computed({
   }
   .inputContainer {
     height: 35px;
-    width: 200px;
+    width: 250px;
 
     box-sizing: border-box;
     border: 2px solid black;
