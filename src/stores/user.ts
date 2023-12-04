@@ -3,6 +3,7 @@ import { ref } from "vue"
 import type { Cat } from "@/api/types"
 
 export const useUserStore = defineStore("user", () => {
+  const adminLoggedIn = ref<boolean>(false)
   const ageChecked = ref<boolean>(true)
   const nameChecked = ref<boolean>(false)
   const ascendingChecked = ref<boolean>(true)
@@ -39,6 +40,7 @@ export const useUserStore = defineStore("user", () => {
   }
 
   return {
+    adminLoggedIn,
     ageChecked,
     nameChecked,
     ascendingChecked,

@@ -2,6 +2,7 @@ import { defineStore } from "pinia"
 import { ref, computed } from "vue"
 
 import getCats from "@/api/getCats"
+import postCat from "@/api/postCat"
 
 import type { Cat } from "@/api/types"
 
@@ -79,9 +80,15 @@ export const useCatsStore = defineStore("cats", () => {
       .filter((cat) => INCLUDE_BY_NAME(cat))
   })
 
+  const ADD_CAT = async (newCat: Cat) => {
+    await postCat(newCat)
+    await FETCH_CATS
+  }
+
   return {
     cats,
     YOUNGEST_CATS,
+    ADD_CAT,
     FETCH_CATS,
     YOUNGER_THAN_6,
     YOUNGER_THAN_10,

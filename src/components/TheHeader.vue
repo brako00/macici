@@ -3,17 +3,24 @@
     <div class="container">
       <div class="nameContainer">Meow Matchmakers</div>
       <div class="imageContainer">
-        <img v-if="!loginAdmin" src="../../user.png" alt="User" />
-        <img v-else src="../../setting.png" alt="Admin" />
+        <router-link :to="{ name: 'admin' }">
+          <img
+            v-if="!userStore.adminLoggedIn"
+            src="../../user.png"
+            alt="User"
+          />
+          <img v-else src="../../setting.png" alt="Admin" />
+        </router-link>
       </div>
     </div>
   </header>
 </template>
 
 <script lang="ts" setup>
-const loginAdmin = false
-</script>
+import { useUserStore } from "@/stores/user"
 
+const userStore = useUserStore()
+</script>
 <style lang="scss" scoped>
 @import "@/assets/globalComponents.scss";
 
