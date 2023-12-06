@@ -13,11 +13,13 @@
           role="catCard"
         />
       </div>
+
       <div v-if="isErrorMessage" class="errorMessage">
         <h1>/ᐠ｡ꞈ｡ᐟ\</h1>
         <h1>Unfortunatelly we can't find your desired cat</h1>
         <h2>Maybe you could try changing some filters</h2>
       </div>
+
       <div class="buttonContainer">
         <action-button
           v-if="nextBatch"

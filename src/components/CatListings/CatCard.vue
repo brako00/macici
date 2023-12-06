@@ -18,14 +18,29 @@
       </div>
 
       <action-button
-        v-if="!cat.adopted"
+        v-if="!userStore.adminLoggedIn"
         text="Adopt"
         type="primary"
         class="adoptButton"
         @click="openModal"
       />
 
-      <h2 v-else class="adoptedLine">Adopted</h2>
+      <router-link :to="{ name: 'admin' }">
+        <action-button
+          v-if="userStore.adminLoggedIn"
+          text="Edit"
+          type="primary"
+        />
+      </router-link>
+
+      <action-button
+        v-if="userStore.adminLoggedIn"
+        text="Delete"
+        type="primary"
+        @click="catsStore.DELETE_CAT(cat.id)"
+      />
+
+      <!-- <h2 v-else class="adoptedLine">Adopted</h2> -->
 
       <adopt-modal
         v-if="showAdoptModal"
@@ -44,7 +59,13 @@ import type { Cat } from "@/api/types"
 import { ref } from "vue"
 import AdoptModal from "@/components/Shared/AdoptModal.vue"
 
+import { useUserStore } from "@/stores/user"
+import { useCatsStore } from "@/stores/cats"
+
 import { vOnClickOutside } from "@vueuse/components"
+
+const userStore = useUserStore()
+const catsStore = useCatsStore()
 
 const showAdoptModal = ref<boolean>(false)
 

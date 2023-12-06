@@ -3,6 +3,7 @@ import { ref, computed } from "vue"
 
 import getCats from "@/api/getCats"
 import postCat from "@/api/postCat"
+import deleteCat from "@/api/deleteCat"
 
 import type { Cat } from "@/api/types"
 
@@ -82,13 +83,19 @@ export const useCatsStore = defineStore("cats", () => {
 
   const ADD_CAT = async (newCat: Cat) => {
     await postCat(newCat)
-    await FETCH_CATS
+    await FETCH_CATS()
+  }
+
+  const DELETE_CAT = async (id: number) => {
+    await deleteCat(id)
+    await FETCH_CATS()
   }
 
   return {
     cats,
     YOUNGEST_CATS,
     ADD_CAT,
+    DELETE_CAT,
     FETCH_CATS,
     YOUNGER_THAN_6,
     YOUNGER_THAN_10,

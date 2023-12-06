@@ -16,7 +16,11 @@
       text="Adopt"
       type="primary"
       class="adoptButton"
-      @click="$emit('close'), userStore.UPDATE_ADOPTED(cat)"
+      @click="
+        $emit('close'),
+          userStore.UPDATE_ADOPTED(cat),
+          catsStore.DELETE_CAT(cat.id)
+      "
     />
   </div>
 </template>
@@ -26,8 +30,10 @@ import ActionButton from "@/components/Shared/ActionButton.vue"
 import type { PropType } from "vue"
 import type { Cat } from "@/api/types"
 import { useUserStore } from "@/stores/user"
+import { useCatsStore } from "@/stores/cats"
 
 const userStore = useUserStore()
+const catsStore = useCatsStore()
 
 defineProps({
   cat: {

@@ -1,8 +1,20 @@
 <template>
   <header>
     <div class="container">
-      <div class="nameContainer">Meow Matchmakers</div>
+      <router-link :to="{ name: 'home' }" class="nameContainer">
+        Meow Matchmakers
+      </router-link>
+
       <div class="imageContainer">
+        <router-link :to="{ name: 'home' }" class="homeLink">
+          <!-- <font-awesome-icon
+            v-if="userStore.adminLoggedIn"
+            :icon="['fas', 'home']"
+            class="icon"
+          /> -->
+          Home
+        </router-link>
+
         <router-link :to="{ name: 'admin' }">
           <img
             v-if="!userStore.adminLoggedIn"
@@ -45,19 +57,38 @@ header {
       font-family: $secondaryFontFamily;
       display: flex;
       align-items: center;
+      text-decoration: none;
+      color: #000;
     }
     .imageContainer {
       padding: auto;
       margin-right: 10px;
       display: flex;
       align-items: center;
-      img {
-        height: 40px;
-        width: 40px;
+      img,
+      .icon {
+        height: 50px;
+        width: 50px;
         object-fit: contain;
         border-radius: 20%;
       }
+
+      // .icon {
+      //   color: #000;
+      // }
     }
   }
+}
+
+.homeLink {
+  color: #000;
+  text-decoration: none;
+  font-size: x-large;
+
+  font-family: $primaryFontFamily;
+}
+
+a {
+  margin-right: 20px;
 }
 </style>
