@@ -61,6 +61,10 @@ div {
     border-radius: 50%;
     display: grid;
     place-content: center;
+
+    &:hover {
+      background-color: $buttonBgColor;
+    }
   }
 
   input::before {
@@ -75,6 +79,10 @@ div {
 
   input:checked::before {
     transform: scale(1);
+  }
+
+  input:hover::before {
+    box-shadow: inset 3em 3em black;
   }
 }
 </style>

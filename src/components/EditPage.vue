@@ -3,13 +3,13 @@
     <div class="innerContainer">
       <h2>Edit cat</h2>
 
-      <form @submit="catsStore.ADD_CAT(newCat)" autocomplete="on">
+      <form @submit="catsStore.UPDATE_CAT(newCat)" autocomplete="on">
         <div class="inputContainer">
           <label for="name">Name:</label>
           <input
-            class="formLine"
             id="name"
             v-model="newCat.name"
+            class="formLine"
             type="text"
             @blur="checkFormName"
           />
@@ -23,9 +23,9 @@
         <div class="inputContainer">
           <label for="color">Color:</label>
           <select
-            class="formLine"
             id="color"
             v-model="newCat.color"
+            class="formLine"
             @blur="checkFormColor"
           >
             <option v-for="color in colors" :key="color">{{ color }}</option>
@@ -35,9 +35,9 @@
         <div class="inputContainer">
           <label for="image">Image:</label>
           <input
-            class="formLine"
             id="image"
             v-model="newCat.image"
+            class="formLine"
             type="url"
             @blur="checkFormImage"
           />
@@ -51,18 +51,28 @@
       </div> -->
 
         <div class="buttonContainer">
-          <button type="submit">Update cat</button>
+          <button type="submit" @click="openModal">Update cat</button>
         </div>
       </form>
     </div>
+    <confirmation-modal
+      v-if="showConfirmationModal"
+      v-on-click-outside="closeModal"
+      :cat="newCat"
+      action="edited"
+      @close="closeModal"
+    />
   </div>
 </template>
 
 <script lang="ts" setup>
-import { ref, type PropType } from "vue"
-import type { Cat } from "@/api/types"
+import ConfirmationModal from "./Shared/ConfirmationModal.vue"
+import { computed, ref } from "vue"
 
 import { useCatsStore } from "@/stores/cats"
+import { useRoute } from "vue-router"
+
+import { vOnClickOutside } from "@vueuse/components"
 
 const catsStore = useCatsStore()
 
@@ -70,33 +80,23 @@ const errors = new Set<string>()
 
 const numbers = /\d/
 
-// defineProps({
-//   cat: {
-//     type: Object as PropType<Cat>,
-//     required: true
-//   }
-// })
+const route = useRoute()
+const editCatId = computed(() => +route.params.id)
+
+catsStore.GET_UNIQUE_CAT(editCatId.value)
+
+const newCat = catsStore.uniqueCat
 
 const checkFormName = () => {
-  if (newCat.value.name === "") errors.add("Name is required")
-  if (numbers.test(newCat.value.name))
-    errors.add("Name should not have numbers")
+  if (newCat.name === "") errors.add("Name is required")
+  if (numbers.test(newCat.name)) errors.add("Name should not have numbers")
 }
 const checkFormColor = () => {
-  if (newCat.value.color === "") errors.add("Color is required")
+  if (newCat.color === "") errors.add("Color is required")
 }
 const checkFormImage = () => {
-  if (newCat.value.image === "") errors.add("Image URL is required")
+  if (newCat.image === "") errors.add("Image URL is required")
 }
-
-const newCat = ref<Cat>({
-  id: 0,
-  adopted: false,
-  name: "",
-  color: "",
-  age: 1,
-  image: ""
-})
 
 const colors = [
   "Black",
@@ -109,6 +109,16 @@ const colors = [
   "Point",
   "Tortoiseshell"
 ]
+
+const showConfirmationModal = ref<boolean>(false)
+
+const openModal = () => {
+  showConfirmationModal.value = true
+}
+
+const closeModal = () => {
+  showConfirmationModal.value = false
+}
 </script>
 
 <style lang="scss" scoped>

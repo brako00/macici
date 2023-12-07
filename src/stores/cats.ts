@@ -8,10 +8,20 @@ import deleteCat from "@/api/deleteCat"
 import type { Cat } from "@/api/types"
 
 import { useUserStore } from "@/stores/user"
+import putCat from "@/api/putCat"
 
 export const useCatsStore = defineStore("cats", () => {
   const cats = ref(<Cat[]>[])
   const YOUNGEST_CATS = ref(<Cat[]>[])
+
+  const uniqueCat = ref<Cat>({
+    id: 0,
+    adopted: false,
+    name: "",
+    color: "",
+    age: 1,
+    image: ""
+  })
 
   const FETCH_CATS = async () => {
     const recievedCats = await getCats()
@@ -91,17 +101,33 @@ export const useCatsStore = defineStore("cats", () => {
     await FETCH_CATS()
   }
 
+  const UPDATE_CAT = async (newCat: Cat) => {
+    await putCat(newCat)
+    await FETCH_CATS()
+  }
+
+  const GET_UNIQUE_CAT = (id: number) => {
+    cats.value.forEach((cat) => {
+      if (cat.id === id) {
+        uniqueCat.value = cat
+      }
+    })
+  }
+
   return {
     cats,
+    uniqueCat,
     YOUNGEST_CATS,
     ADD_CAT,
     DELETE_CAT,
+    UPDATE_CAT,
     FETCH_CATS,
     YOUNGER_THAN_6,
     YOUNGER_THAN_10,
     BLACK_CATS,
     INCLUDE_BY_NAME,
     SORTED_CATS,
-    FILTERED_CATS
+    FILTERED_CATS,
+    GET_UNIQUE_CAT
   }
 })

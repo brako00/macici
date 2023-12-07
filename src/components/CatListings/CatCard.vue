@@ -4,15 +4,15 @@
       <img :src="cat.image" alt="Image of the cat" />
 
       <div class="catInfo">
-        <h2 class="catName">{{ cat.name }}</h2>
+        <h2 class="catName">{{ props.cat.name }}</h2>
         <div class="textContainer">
           <span>
             <h4>Fur color:</h4>
-            <h3>{{ cat.color }}</h3>
+            <h3>{{ props.cat.color }}</h3>
           </span>
           <span>
             <h4>Months old:</h4>
-            <h3>{{ cat.age }}</h3>
+            <h3>{{ props.cat.age }}</h3>
           </span>
         </div>
       </div>
@@ -25,20 +25,23 @@
         @click="openModal"
       />
 
-      <router-link :to="{ name: 'admin' }">
-        <action-button
+      <div v-if="userStore.adminLoggedIn">
+        <router-link
           v-if="userStore.adminLoggedIn"
-          text="Edit"
-          type="primary"
-        />
-      </router-link>
+          :to="{ path: `edit/${props.cat.id}` }"
+          class="actionContainer"
+        >
+          <button>
+            <font-awesome-icon :icon="['fas', 'edit']" class="icon" />
+            Edit
+          </button>
+        </router-link>
 
-      <action-button
-        v-if="userStore.adminLoggedIn"
-        text="Delete"
-        type="primary"
-        @click="catsStore.DELETE_CAT(cat.id)"
-      />
+        <button class="actionContainer" @click="catsStore.DELETE_CAT(cat.id)">
+          <font-awesome-icon :icon="['fas', 'trash']" class="icon" />
+          Delete
+        </button>
+      </div>
 
       <!-- <h2 v-else class="adoptedLine">Adopted</h2> -->
 
@@ -54,9 +57,8 @@
 
 <script lang="ts" setup>
 import ActionButton from "@/components/Shared/ActionButton.vue"
-import type { PropType } from "vue"
+import { ref, type PropType } from "vue"
 import type { Cat } from "@/api/types"
-import { ref } from "vue"
 import AdoptModal from "@/components/Shared/AdoptModal.vue"
 
 import { useUserStore } from "@/stores/user"
@@ -69,7 +71,7 @@ const catsStore = useCatsStore()
 
 const showAdoptModal = ref<boolean>(false)
 
-defineProps({
+const props = defineProps({
   cat: {
     type: Object as PropType<Cat>,
     required: true
@@ -107,15 +109,9 @@ const closeModal = () => {
   .adoptButton {
     margin-bottom: 15px;
   }
-  .adoptedLine {
-    background-color: $buttonBgColor;
-    font-size: 200%;
-    margin: 0;
-    font-family: $secondaryFontFamily;
-    text-align: center;
-    width: 100%;
-    position: relative;
-    bottom: 0;
+
+  .icon {
+    color: black;
   }
 
   img {
@@ -149,5 +145,14 @@ const closeModal = () => {
     margin: 0;
     padding: 2.5px 0;
   }
+}
+.actionContainer {
+  display: flex;
+  flex-direction: row;
+}
+
+a {
+  display: flex;
+  flex-direction: row;
 }
 </style>

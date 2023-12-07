@@ -6,14 +6,13 @@
       </router-link>
 
       <div class="imageContainer">
-        <router-link :to="{ name: 'home' }" class="homeLink">
-          <!-- <font-awesome-icon
-            v-if="userStore.adminLoggedIn"
-            :icon="['fas', 'home']"
-            class="icon"
-          /> -->
-          Home
-        </router-link>
+        <div
+          v-if="userStore.adminLoggedIn"
+          class="signOut"
+          @click="userStore.adminLoggedIn = false"
+        >
+          Sign Out
+        </div>
 
         <router-link :to="{ name: 'admin' }">
           <img
@@ -72,20 +71,27 @@ header {
         object-fit: contain;
         border-radius: 20%;
       }
-
-      // .icon {
-      //   color: #000;
-      // }
     }
   }
 }
 
-.homeLink {
+.signOut {
   color: #000;
-  text-decoration: none;
   font-size: x-large;
 
   font-family: $primaryFontFamily;
+  margin-right: 20px;
+  height: 100%;
+  width: 100%;
+
+  display: flex;
+  align-items: center;
+
+  cursor: pointer;
+}
+
+.signOut:hover {
+  background-color: $buttonBgColor;
 }
 
 a {

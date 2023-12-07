@@ -8,9 +8,9 @@
         <div class="inputContainer">
           <label for="name">Name:</label>
           <input
-            class="formLine"
             id="name"
             v-model="newCat.name"
+            class="formLine"
             type="text"
             @blur="checkFormName"
           />
@@ -24,9 +24,9 @@
         <div class="inputContainer">
           <label for="color">Color:</label>
           <select
-            class="formLine"
             id="color"
             v-model="newCat.color"
+            class="formLine"
             @blur="checkFormColor"
           >
             <option v-for="color in colors" :key="color">{{ color }}</option>
@@ -36,9 +36,9 @@
         <div class="inputContainer">
           <label for="image">Image:</label>
           <input
-            class="formLine"
             id="image"
             v-model="newCat.image"
+            class="formLine"
             type="url"
             @blur="checkFormImage"
           />
@@ -52,16 +52,27 @@
       </div> -->
 
         <div class="buttonContainer">
-          <button type="submit">Create cat</button>
+          <button type="submit" @click="openModal">Create cat</button>
         </div>
       </form>
     </div>
+
+    <confirmation-modal
+      v-if="showConfirmationModal"
+      v-on-click-outside="closeModal"
+      :cat="newCat"
+      action="created"
+      @close="closeModal"
+    />
   </div>
 </template>
 
 <script lang="ts" setup>
+import ConfirmationModal from "./Shared/ConfirmationModal.vue"
 import { ref } from "vue"
 import type { Cat } from "@/api/types"
+
+import { vOnClickOutside } from "@vueuse/components"
 
 import { useCatsStore } from "@/stores/cats"
 
@@ -103,6 +114,15 @@ const colors = [
   "Point",
   "Tortoiseshell"
 ]
+const showConfirmationModal = ref<boolean>(false)
+
+const openModal = () => {
+  showConfirmationModal.value = true
+}
+
+const closeModal = () => {
+  showConfirmationModal.value = false
+}
 </script>
 
 <style lang="scss" scoped>

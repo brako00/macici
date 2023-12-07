@@ -47,14 +47,20 @@
     <div class="filters">
       <h2>Filters:</h2>
       <check-box
+        :is-checked="userStore.sixChecked"
         :action="userStore.ADD_YOUNGER_THAN_6"
         value="Younger than 6 months"
       />
       <check-box
+        :is-checked="userStore.tenChecked"
         :action="userStore.ADD_YOUNGER_THAN_10"
         value="Younger than 10 months"
       />
-      <check-box :action="userStore.ADD_BLACK_CATS" value="Black fur color" />
+      <check-box
+        :is-checked="userStore.blackChecked"
+        :action="userStore.ADD_BLACK_CATS"
+        value="Black fur color"
+      />
     </div>
   </div>
 </template>

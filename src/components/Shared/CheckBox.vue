@@ -1,17 +1,24 @@
 <template>
   <div @click="props.action">
-    <input
-      :id="props.value"
-      :value="/props.value/i"
-      type="checkbox"
-      class="checkbox"
-      @change="props.action"
-    />
-    <label for="props.value"> {{ props.value }} </label>
+    <div @click="handleChange()">
+      <input
+        :id="props.value"
+        :value="/props.value/i"
+        type="checkbox"
+        class="checkbox"
+        :checked="props.isChecked"
+        @change="handleChange(), props.action"
+      />
+      <label for="props.value"> {{ props.value }} </label>
+    </div>
   </div>
 </template>
 
 <script lang="ts" setup>
+import { useUserStore } from "@/stores/user"
+
+const userStore = useUserStore()
+
 const props = defineProps({
   value: {
     type: String,
@@ -20,8 +27,23 @@ const props = defineProps({
   action: {
     type: Function,
     required: true
+  },
+  isChecked: {
+    type: Boolean,
+    required: true
   }
 })
+
+const handleChange = () => {
+  if (props.value === "Younger than 6 months")
+    userStore.sixChecked = !userStore.sixChecked
+
+  if (props.value === "Younger than 10 months")
+    userStore.tenChecked = !userStore.tenChecked
+
+  if (props.value === "Black fur color")
+    userStore.blackChecked = !userStore.blackChecked
+}
 </script>
 
 <style lang="scss" scoped>
@@ -42,6 +64,10 @@ div {
     border-radius: 20%;
     display: grid;
     place-content: center;
+
+    &:hover {
+      background-color: $buttonBgColor;
+    }
   }
 
   input::before {

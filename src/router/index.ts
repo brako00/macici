@@ -1,6 +1,7 @@
 import { createRouter, createWebHashHistory } from "vue-router"
 import HomeView from "@/views/HomeView.vue"
 import AdminView from "@/views/AdminView.vue"
+import EditPage from "@/components/EditPage.vue"
 
 const routes = [
   {
@@ -13,6 +14,11 @@ const routes = [
     path: "/admin",
     name: "admin",
     component: AdminView
+  },
+  {
+    path: "/edit/:id",
+    name: "edit",
+    component: EditPage
   }
 ]
 

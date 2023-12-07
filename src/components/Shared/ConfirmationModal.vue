@@ -7,37 +7,31 @@
     />
 
     <h2>
-      Are you sure you want to adopt <span class="catName">{{ cat.name }}</span
-      >?
+      You have successfully {{ action }}
+      <span class="catName">{{ cat.name }}</span>
     </h2>
-    <h3>Once you click Adopt it is yours</h3>
 
     <action-button
-      text="Adopt"
+      text="OK"
       type="primary"
-      class="adoptButton"
-      @click="
-        $emit('close'),
-          userStore.UPDATE_ADOPTED(cat),
-          catsStore.DELETE_CAT(cat.id)
-      "
+      class="confirmationButton"
+      @click="$emit('close')"
     />
   </div>
 </template>
 
 <script lang="ts" setup>
 import ActionButton from "@/components/Shared/ActionButton.vue"
-import { type PropType } from "vue"
+import type { PropType } from "vue"
 import type { Cat } from "@/api/types"
-import { useUserStore } from "@/stores/user"
-import { useCatsStore } from "@/stores/cats"
-
-const userStore = useUserStore()
-const catsStore = useCatsStore()
 
 defineProps({
   cat: {
     type: Object as PropType<Cat>,
+    required: true
+  },
+  action: {
+    type: String,
     required: true
   }
 })
@@ -80,7 +74,7 @@ defineEmits(["close"])
     margin: 0;
   }
 
-  .adoptButton {
+  .confirmationButton {
     width: 80%;
   }
 }

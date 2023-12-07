@@ -4,10 +4,15 @@ import type { Cat } from "@/api/types"
 
 export const useUserStore = defineStore("user", () => {
   const adminLoggedIn = ref<boolean>(false)
+
   const ageChecked = ref<boolean>(true)
   const nameChecked = ref<boolean>(false)
   const ascendingChecked = ref<boolean>(true)
   const descendingChecked = ref<boolean>(false)
+
+  const sixChecked = ref<boolean>(false)
+  const tenChecked = ref<boolean>(false)
+  const blackChecked = ref<boolean>(false)
 
   const selectedYoungerThan6 = ref<number[]>([])
   const selectedYoungerThan10 = ref<number[]>([])
@@ -45,6 +50,9 @@ export const useUserStore = defineStore("user", () => {
     nameChecked,
     ascendingChecked,
     descendingChecked,
+    sixChecked,
+    tenChecked,
+    blackChecked,
     selectedYoungerThan6,
     selectedYoungerThan10,
     selectedColorBlack,
