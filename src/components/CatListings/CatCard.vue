@@ -25,25 +25,23 @@
         @click="openModal"
       />
 
-      <div v-if="userStore.adminLoggedIn">
+      <div v-if="userStore.adminLoggedIn" class="editDelete">
         <router-link
           v-if="userStore.adminLoggedIn"
           :to="{ path: `edit/${props.cat.id}` }"
-          class="actionContainer"
+          class="edit"
         >
-          <button>
+          <button class="editButton">
             <font-awesome-icon :icon="['fas', 'edit']" class="icon" />
             Edit
           </button>
         </router-link>
 
-        <button class="actionContainer" @click="catsStore.DELETE_CAT(cat.id)">
+        <button class="delete" @click="catsStore.DELETE_CAT(cat.id)">
           <font-awesome-icon :icon="['fas', 'trash']" class="icon" />
           Delete
         </button>
       </div>
-
-      <!-- <h2 v-else class="adoptedLine">Adopted</h2> -->
 
       <adopt-modal
         v-if="showAdoptModal"
@@ -146,13 +144,42 @@ const closeModal = () => {
     padding: 2.5px 0;
   }
 }
-.actionContainer {
+.editDelete {
   display: flex;
   flex-direction: row;
+  width: 100%;
+  justify-content: space-around;
+  margin-bottom: 15px;
 }
 
-a {
-  display: flex;
-  flex-direction: row;
+.delete,
+.edit {
+  height: 40px;
+  width: 30%;
+}
+
+.delete,
+.editButton {
+  font-family: $primaryFontFamily;
+  font-size: large;
+  border-radius: 8px;
+}
+
+.delete {
+  background-color: red;
+
+  &:hover {
+    background-color: rgb(213, 4, 4);
+  }
+}
+
+.editButton {
+  background-color: #e9cc2d;
+  width: 100%;
+  height: 100%;
+
+  &:hover {
+    background-color: #c6af2a;
+  }
 }
 </style>

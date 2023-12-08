@@ -1,7 +1,7 @@
 <template>
   <div class="outerContainer">
     <div class="innerContainer">
-      <img src="../../public/setting.png" alt="image of admin" />
+      <img src="@/../public/setting.png" alt="image of admin" />
 
       <div class="signInContainer">
         <div class="signs">
@@ -14,20 +14,16 @@
 
           <div class="inputContainer">
             <h3>Password:</h3>
-            <input v-model="password" type="password" placeholder="Pass1234" />
+            <input
+              v-model="password"
+              type="password"
+              placeholder="Pass1234"
+              @focusout="checkFormPassword"
+            />
           </div>
 
-          <div v-if="isThereError">
-            <h3 v-if="usernameOrPasswordError">
-              Username or password incorrect
-            </h3>
-            <h3 v-if="passwordLengthError">
-              Password should have at least 8 characters
-            </h3>
-            <h3 v-if="passwordNumberError">
-              Password should have at least one number
-            </h3>
-          </div>
+          <b>{{ errorTextUsername }}</b>
+          <b>{{ errorTextPassword }}</b>
         </div>
 
         <div class="inputContainer">
@@ -35,7 +31,7 @@
             type="submit"
             value="Sign in"
             class="signinbutton"
-            @click="checkingInputs"
+            @click="checkFormUsername"
           />
         </div>
       </div>
@@ -55,39 +51,27 @@ const constPassword = "Pass1234"
 const username = ref<string>("")
 const password = ref<string>("")
 
-const isThereError = ref<boolean>(false)
-const usernameOrPasswordError = ref<boolean>(false)
-const passwordLengthError = ref<boolean>(false)
-const passwordNumberError = ref<boolean>(false)
+const numbers = /\d/
 
-const checkingInputs = () => {
-  isThereError.value = false
-  usernameOrPasswordError.value = false
-  passwordLengthError.value = false
-  passwordNumberError.value = false
+const errorTextUsername = ref<string>("")
+const errorTextPassword = ref<string>("")
 
-  const numbers = /\d/
+const checkFormUsername = () => {
+  if (username.value !== constUsername || password.value !== constPassword) {
+    errorTextUsername.value = "Username or password incorrect"
+  } else errorTextUsername.value = ""
 
-  if (username.value !== constUsername) {
-    isThereError.value = true
-    usernameOrPasswordError.value = true
-  }
-  if (password.value !== constPassword) {
-    isThereError.value = true
-    usernameOrPasswordError.value = true
-  }
-  if (password.value.length < 8) {
-    isThereError.value = true
-    passwordLengthError.value = true
-  }
-  if (!numbers.test(password.value)) {
-    isThereError.value = true
-    passwordNumberError.value = true
-  }
-
-  if (isThereError.value === false) {
+  if (errorTextUsername.value === "") {
     userStore.adminLoggedIn = true
   }
+}
+
+const checkFormPassword = () => {
+  if (password.value.length < 8) {
+    errorTextPassword.value = "Password should have at least 8 characters"
+  } else if (!numbers.test(password.value)) {
+    errorTextPassword.value = "Password should have at least one number"
+  } else errorTextPassword.value = ""
 }
 </script>
 

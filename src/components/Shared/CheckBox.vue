@@ -1,6 +1,6 @@
 <template>
-  <div @click="props.action">
-    <div @click="handleChange()">
+  <div class="outer" @click="props.action">
+    <div class="inner" @click="handleChange()">
       <input
         :id="props.value"
         :value="/props.value/i"
@@ -84,4 +84,12 @@ div {
     transform: scale(1);
   }
 }
+
+.inner {
+  width: 100%;
+}
+
+// .inner:hover ~ input {
+//   background-color: $buttonBgColor;
+// }
 </style>

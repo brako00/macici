@@ -3,25 +3,35 @@
     <div class="innerContainer">
       <h2>Edit cat</h2>
 
-      <form @submit="catsStore.UPDATE_CAT(newCat)" autocomplete="on">
+      <form autocomplete="on">
         <div class="inputContainer">
-          <label for="name">Name:</label>
+          <label for="name">*Name:</label>
           <input
             id="name"
             v-model="newCat.name"
             class="formLine"
             type="text"
-            @blur="checkFormName"
+            @focusout="checkFormName"
           />
+
+          <b>{{ errorTextName }}</b>
         </div>
 
         <div class="inputContainer">
-          <label for="age">Age:</label>
-          <input id="age" v-model="newCat.age" type="number" min="1" max="12" />
+          <label for="age">*Age:</label>
+          <input
+            id="age"
+            v-model="newCat.age"
+            type="number"
+            min="1"
+            max="12"
+            @focusout="checkFormAge"
+          />
+          <b>{{ errorTextAge }}</b>
         </div>
 
         <div class="inputContainer">
-          <label for="color">Color:</label>
+          <label for="color">*Color:</label>
           <select
             id="color"
             v-model="newCat.color"
@@ -30,10 +40,12 @@
           >
             <option v-for="color in colors" :key="color">{{ color }}</option>
           </select>
+
+          <b>{{ errorTextColor }}</b>
         </div>
 
         <div class="inputContainer">
-          <label for="image">Image:</label>
+          <label for="image">*Image:</label>
           <input
             id="image"
             v-model="newCat.image"
@@ -41,6 +53,8 @@
             type="url"
             @blur="checkFormImage"
           />
+
+          <b>{{ errorTextImage }}</b>
         </div>
 
         <!-- <div>
@@ -51,7 +65,7 @@
       </div> -->
 
         <div class="buttonContainer">
-          <button type="submit" @click="openModal">Update cat</button>
+          <button type="submit" @click="checkForm">Update cat</button>
         </div>
       </form>
     </div>
@@ -73,10 +87,9 @@ import { useCatsStore } from "@/stores/cats"
 import { useRoute } from "vue-router"
 
 import { vOnClickOutside } from "@vueuse/components"
+import type { Cat } from "@/api/types"
 
 const catsStore = useCatsStore()
-
-const errors = new Set<string>()
 
 const numbers = /\d/
 
@@ -85,18 +98,61 @@ const editCatId = computed(() => +route.params.id)
 
 catsStore.GET_UNIQUE_CAT(editCatId.value)
 
-const newCat = catsStore.uniqueCat
+const errorTextName = ref<string>("")
+const errorTextAge = ref<string>("")
+const errorTextColor = ref<string>("")
+const errorTextImage = ref<string>("")
 
 const checkFormName = () => {
-  if (newCat.name === "") errors.add("Name is required")
-  if (numbers.test(newCat.name)) errors.add("Name should not have numbers")
+  if (newCat.value.name === "") {
+    errorTextName.value = "Name is required"
+  } else if (numbers.test(newCat.value.name)) {
+    errorTextName.value = "Name should not have numbers"
+  } else errorTextName.value = ""
 }
+
+const checkFormAge = () => {
+  if (newCat.value.age < 1) {
+    errorTextAge.value = "Age should be a positive number"
+  } else if (newCat.value.age > 12) {
+    errorTextAge.value = "Age should be a less than 13"
+  } else errorTextAge.value = ""
+}
+
 const checkFormColor = () => {
-  if (newCat.color === "") errors.add("Color is required")
+  if (newCat.value.color === "") {
+    errorTextColor.value = "Color is required"
+  } else errorTextColor.value = ""
 }
+
 const checkFormImage = () => {
-  if (newCat.image === "") errors.add("Image URL is required")
+  if (newCat.value.image === "") {
+    errorTextImage.value = "Image is required"
+  } else errorTextColor.value = ""
 }
+
+const checkForm = () => {
+  if (
+    errorTextName.value === "" &&
+    errorTextAge.value === "" &&
+    errorTextColor.value === "" &&
+    errorTextImage.value === ""
+  ) {
+    catsStore.UPDATE_CAT(newCat.value)
+    openModal()
+  }
+}
+
+const newCat = ref<Cat>({
+  id: 0,
+  adopted: false,
+  name: "",
+  color: "",
+  age: 1,
+  image: ""
+})
+
+newCat.value = catsStore.uniqueCat
 
 const colors = [
   "Black",

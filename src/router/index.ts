@@ -10,7 +10,6 @@ const routes = [
     component: HomeView
   },
   {
-    //new route
     path: "/admin",
     name: "admin",
     component: AdminView
