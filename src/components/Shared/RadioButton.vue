@@ -6,7 +6,6 @@
       type="radio"
       class="radioButton"
       :name="props.name"
-      @change="handleChange(props.name)"
     />
     <label for="props.value"> {{ props.value }} </label>
   </div>
@@ -45,6 +44,7 @@ const handleChange = (sortValue: String) => {
 
 <style lang="scss" scoped>
 @import "@/assets/globalComponents.scss";
+
 div {
   padding-bottom: 10px;
   display: flex;
@@ -61,10 +61,6 @@ div {
     border-radius: 50%;
     display: grid;
     place-content: center;
-
-    &:hover {
-      background-color: $buttonBgColor;
-    }
   }
 
   input::before {
@@ -80,9 +76,9 @@ div {
   input:checked::before {
     transform: scale(1);
   }
+}
 
-  input:hover::before {
-    box-shadow: inset 3em 3em black;
-  }
+div:hover > input {
+  background-color: $buttonBgColor;
 }
 </style>

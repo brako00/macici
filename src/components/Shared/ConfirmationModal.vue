@@ -1,5 +1,5 @@
 <template>
-  <div class="outerContainer">
+  <div class="outerContainerModal">
     <font-awesome-icon
       :icon="['fas', 'close']"
       class="icon"
@@ -41,13 +41,14 @@ defineEmits(["close"])
 
 <style lang="scss" scoped>
 @import "@/assets/globalComponents.scss";
-.outerContainer {
+.outerContainerModal {
   position: fixed;
-  top: 20%;
-  left: 40%;
+  top: 50%;
+  left: 50%;
   width: 700px;
   height: fit-content;
   padding: 20px;
+  box-sizing: border-box;
 
   z-index: 999;
   display: flex;
@@ -57,6 +58,10 @@ defineEmits(["close"])
 
   background-color: $buttonHoverBgColor;
   transition: opacity 0.3s ease;
+  transform: translate(-50%, -50%);
+
+  font-size: large;
+  font-family: $primaryFontFamily;
 
   .icon {
     height: 40px;
@@ -76,6 +81,12 @@ defineEmits(["close"])
 
   .confirmationButton {
     width: 80%;
+  }
+}
+
+@media only screen and (max-width: 700px) {
+  .outerContainerModal {
+    width: 100%;
   }
 }
 </style>

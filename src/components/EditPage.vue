@@ -14,7 +14,7 @@
             @focusout="checkFormName"
           />
 
-          <b>{{ errorTextName }}</b>
+          <p>{{ errorTextName }}</p>
         </div>
 
         <div class="inputContainer">
@@ -27,7 +27,7 @@
             max="12"
             @focusout="checkFormAge"
           />
-          <b>{{ errorTextAge }}</b>
+          <p>{{ errorTextAge }}</p>
         </div>
 
         <div class="inputContainer">
@@ -41,7 +41,7 @@
             <option v-for="color in colors" :key="color">{{ color }}</option>
           </select>
 
-          <b>{{ errorTextColor }}</b>
+          <p>{{ errorTextColor }}</p>
         </div>
 
         <div class="inputContainer">
@@ -54,11 +54,25 @@
             @blur="checkFormImage"
           />
 
-          <b>{{ errorTextImage }}</b>
+          <p>{{ errorTextImage }}</p>
         </div>
 
+        <div id="checkboxContainer" class="inputContainer">
+          <label for="adopted">Adopted:</label>
+          <input id="adopted" v-model="newCat.adopted" type="checkbox" />
+        </div>
+
+        <!-- <div class="inputContainer">
+          <check-box
+            id="adopted"
+            :is-checked="newCat.adopted"
+            :action="userStore.UPDATE_ADOPTED"
+            value="adopted"
+          />
+        </div> -->
+
         <!-- <div>
-        <b>Please correct the following error(s):</b>
+        <p>Please correct the following error(s):</p>
         <ul>
           <li v-for="error in errors" :key="error">{{ error }}</li>
         </ul>
@@ -69,27 +83,31 @@
         </div>
       </form>
     </div>
-    <confirmation-modal
-      v-if="showConfirmationModal"
-      v-on-click-outside="closeModal"
-      :cat="newCat"
-      action="edited"
-      @close="closeModal"
-    />
   </div>
+
+  <confirmation-modal
+    v-if="showConfirmationModal"
+    v-on-click-outside="closeModal"
+    :cat="newCat"
+    action="edited"
+    @close="closeModal"
+  />
 </template>
 
 <script lang="ts" setup>
 import ConfirmationModal from "./Shared/ConfirmationModal.vue"
+import CheckBox from "./Shared/CheckBox.vue"
 import { computed, ref } from "vue"
 
 import { useCatsStore } from "@/stores/cats"
+import { useUserStore } from "@/stores/user"
 import { useRoute } from "vue-router"
 
 import { vOnClickOutside } from "@vueuse/components"
 import type { Cat } from "@/api/types"
 
 const catsStore = useCatsStore()
+const userStore = useUserStore()
 
 const numbers = /\d/
 
@@ -140,6 +158,9 @@ const checkForm = () => {
   ) {
     catsStore.UPDATE_CAT(newCat.value)
     openModal()
+    if (newCat.value.adopted) {
+      catsStore.DELETE_CAT(newCat.value.id)
+    }
   }
 }
 
@@ -198,7 +219,43 @@ const closeModal = () => {
   display: flex;
   flex-direction: column;
   width: 100%;
+  padding: 10px 0;
+}
+
+#checkboxContainer {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
   padding: 10px;
+
+  input[type="checkbox"] {
+    appearance: none;
+    background-color: white;
+    width: 1.15em;
+    height: 1.15em;
+    border: 0.15em solid $bgColor;
+    border-radius: 20%;
+    display: grid;
+    place-content: center;
+
+    &:hover {
+      background-color: $buttonBgColor;
+    }
+  }
+
+  input[type="checkbox"]::before {
+    content: "";
+    width: 0.7em;
+    height: 0.75em;
+    border-radius: 20%;
+    transform: scale(0);
+    transition: 100ms transform ease-in-out;
+    box-shadow: inset 1em 1em blueviolet;
+  }
+
+  input[type="checkbox"]:checked::before {
+    transform: scale(1);
+  }
 }
 
 label {
@@ -222,7 +279,7 @@ h2 {
 
 form {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   justify-content: center;
   flex-direction: column;
   width: 400px;
@@ -243,10 +300,34 @@ button {
 .buttonContainer {
   margin-top: 40px;
   margin-bottom: 30px;
-  padding: 10px;
+  padding: 10px 0;
   width: 100%;
 }
 button {
   width: 100%;
+}
+
+p {
+  margin: 0;
+  padding-top: 5px;
+  font-size: large;
+  height: 26px;
+
+  color: rgb(182, 21, 21);
+}
+
+@media only screen and (max-width: 900px) {
+  .innerContainer {
+    width: 100%;
+  }
+}
+@media only screen and (max-width: 500px) {
+  form {
+    width: 100%;
+  }
+  .inputContainer,
+  .buttonContainer {
+    width: 80%;
+  }
 }
 </style>

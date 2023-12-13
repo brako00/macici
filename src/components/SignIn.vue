@@ -4,7 +4,7 @@
       <img src="@/../public/setting.png" alt="image of admin" />
 
       <div class="signInContainer">
-        <div class="signs">
+        <div class="inputFieldsContainer">
           <h2>Sign in</h2>
 
           <div class="inputContainer">
@@ -21,9 +21,11 @@
               @focusout="checkFormPassword"
             />
           </div>
+        </div>
 
-          <b>{{ errorTextUsername }}</b>
-          <b>{{ errorTextPassword }}</b>
+        <div class="errorContainer visibilityClass">
+          <p>{{ errorTextPassword }}</p>
+          <p>{{ errorTextUsername }}</p>
         </div>
 
         <div class="inputContainer">
@@ -59,6 +61,8 @@ const errorTextPassword = ref<string>("")
 const checkFormUsername = () => {
   if (username.value !== constUsername || password.value !== constPassword) {
     errorTextUsername.value = "Username or password incorrect"
+    const element = document.querySelector(".errorContainer")
+    element?.classList.remove("visibilityClass")
   } else errorTextUsername.value = ""
 
   if (errorTextUsername.value === "") {
@@ -69,8 +73,12 @@ const checkFormUsername = () => {
 const checkFormPassword = () => {
   if (password.value.length < 8) {
     errorTextPassword.value = "Password should have at least 8 characters"
+    const element = document.querySelector(".errorContainer")
+    element?.classList.remove("visibilityClass")
   } else if (!numbers.test(password.value)) {
     errorTextPassword.value = "Password should have at least one number"
+    const element = document.querySelector(".errorContainer")
+    element?.classList.remove("visibilityClass")
   } else errorTextPassword.value = ""
 }
 </script>
@@ -83,56 +91,102 @@ const checkFormPassword = () => {
   justify-content: center;
   align-items: center;
   margin: 50px;
+
+  .innerContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    flex-wrap: wrap;
+
+    font-family: $primaryFontFamily;
+
+    background-color: $bgColor;
+
+    border-radius: 2%;
+
+    height: 800px;
+    width: 500px;
+
+    img {
+      height: 200px;
+      width: 200px;
+      border-radius: 100%;
+      object-fit: contain;
+    }
+
+    .signInContainer {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+
+      .inputFieldsContainer {
+        font-size: large;
+        width: 300px;
+
+        h2 {
+          font-size: xx-large;
+          display: flex;
+          justify-content: center;
+          margin-bottom: 0;
+        }
+
+        h3 {
+          margin-bottom: 10px;
+        }
+      }
+      .visibilityClass {
+        visibility: hidden;
+      }
+
+      .errorContainer {
+        font-size: medium;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        flex-wrap: wrap;
+        width: 100%;
+        height: 70px;
+
+        span {
+          color: $bgColor;
+        }
+
+        p {
+          margin-bottom: 0;
+          color: rgb(182, 21, 21);
+        }
+      }
+
+      .inputContainer {
+        margin-top: 30px;
+        width: 300px;
+
+        input {
+          line-height: 80%;
+          font-size: x-large;
+          width: 98%;
+        }
+
+        .signinbutton {
+          width: 100%;
+          height: 80%;
+          margin-bottom: 20px;
+        }
+      }
+    }
+  }
 }
-.innerContainer {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  flex-wrap: wrap;
 
-  font-family: $primaryFontFamily;
-
-  background-color: $bgColor;
-
-  border-radius: 2%;
-
-  height: 800px;
-  width: 500px;
-}
-
-.signInContainer {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-}
-
-h2 {
-  font-size: xx-large;
-  display: flex;
-  justify-content: center;
-  margin-bottom: 0;
-}
-.inputContainer {
-  margin-top: 30px;
-  width: 100%;
-}
-
-input {
-  line-height: 80%;
-  font-size: x-large;
-}
-
-.signinbutton {
-  width: 100%;
-  margin-bottom: 20px;
-}
-
-img {
-  height: 200px;
-  width: 200px;
-  border-radius: 100%;
-  object-fit: contain;
+@media only screen and (max-width: 650px) {
+  .outerContainer {
+    width: 100%;
+    margin: 50px 0px 0px 0px;
+  }
+  .innerContainer {
+    width: 100%;
+  }
 }
 </style>

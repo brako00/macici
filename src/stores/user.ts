@@ -41,7 +41,7 @@ export const useUserStore = defineStore("user", () => {
   }
 
   const UPDATE_ADOPTED = (cat: Cat) => {
-    cat.adopted = true
+    cat.adopted = !cat.adopted
   }
 
   return {

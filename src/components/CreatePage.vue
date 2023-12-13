@@ -3,7 +3,7 @@
     <div class="innerContainer">
       <h2>Create new cat</h2>
 
-      <form autocomplete="on">
+      <form autocomplete="off">
         <div class="inputContainer">
           <label for="name">*Name:</label>
           <input
@@ -14,7 +14,7 @@
             @focusout="checkFormName"
           />
 
-          <b>{{ errorTextName }}</b>
+          <p class="errorName visibilityClass">{{ errorTextName }}</p>
         </div>
 
         <div class="inputContainer">
@@ -28,7 +28,7 @@
             @focusout="checkFormAge"
           />
 
-          <b>{{ errorTextAge }}</b>
+          <p>{{ errorTextAge }}</p>
         </div>
 
         <div class="inputContainer">
@@ -42,7 +42,7 @@
             <option v-for="color in colors" :key="color">{{ color }}</option>
           </select>
 
-          <b>{{ errorTextColor }}</b>
+          <p>{{ errorTextColor }}</p>
         </div>
 
         <div class="inputContainer">
@@ -55,7 +55,7 @@
             @focusout="checkFormImage"
           />
 
-          <b>{{ errorTextImage }}</b>
+          <p>{{ errorTextImage }}</p>
         </div>
 
         <div class="buttonContainer">
@@ -63,15 +63,15 @@
         </div>
       </form>
     </div>
-
-    <confirmation-modal
-      v-if="showConfirmationModal"
-      v-on-click-outside="closeModal"
-      :cat="newCat"
-      action="created"
-      @close="closeModal"
-    />
   </div>
+
+  <confirmation-modal
+    v-if="showConfirmationModal"
+    v-on-click-outside="closeModal"
+    :cat="newCat"
+    action="created"
+    @close="closeModal"
+  />
 </template>
 
 <script lang="ts" setup>
@@ -85,6 +85,27 @@ import { useCatsStore } from "@/stores/cats"
 
 const catsStore = useCatsStore()
 
+const newCat = ref<Cat>({
+  id: 0,
+  adopted: false,
+  name: "",
+  color: "",
+  age: 1,
+  image: ""
+})
+
+const colors = [
+  "Black",
+  "White",
+  "Gray",
+  "Yellow",
+  "Beige",
+  "Tabby",
+  "Calico",
+  "Point",
+  "Tortoiseshell"
+]
+
 const numbers = /\d/
 
 const errorTextName = ref<string>("")
@@ -92,6 +113,16 @@ const errorTextAge = ref<string>("")
 const errorTextColor = ref<string>("")
 const errorTextImage = ref<string>("")
 
+// const refreshCat = () => {
+//   newCat.value.id = 0
+//   newCat.value.adopted = false
+//   newCat.value.name = ""
+//   newCat.value.color = ""
+//   newCat.value.age = 1
+//   newCat.value.image = ""
+// }
+
+//checking input fields
 const checkFormName = () => {
   if (newCat.value.name === "") {
     errorTextName.value = "Name is required"
@@ -117,9 +148,10 @@ const checkFormColor = () => {
 const checkFormImage = () => {
   if (newCat.value.image === "") {
     errorTextImage.value = "Image is required"
-  } else errorTextColor.value = ""
+  } else errorTextImage.value = ""
 }
 
+//if all input fields are in correct form create cat
 const checkForm = () => {
   if (
     errorTextName.value === "" &&
@@ -129,29 +161,10 @@ const checkForm = () => {
   ) {
     catsStore.ADD_CAT(newCat.value)
     openModal()
+    // refreshCat()
   }
 }
 
-const newCat = ref<Cat>({
-  id: 0,
-  adopted: false,
-  name: "",
-  color: "",
-  age: 1,
-  image: ""
-})
-
-const colors = [
-  "Black",
-  "White",
-  "Gray",
-  "Yellow",
-  "Beige",
-  "Tabby",
-  "Calico",
-  "Point",
-  "Tortoiseshell"
-]
 const showConfirmationModal = ref<boolean>(false)
 
 const openModal = () => {
@@ -172,67 +185,90 @@ const closeModal = () => {
   justify-content: center;
 
   margin-top: 30px;
+
   font-family: $primaryFontFamily;
   font-size: x-large;
+
+  .innerContainer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+
+    width: 50%;
+
+    background-color: $bgColor;
+    border-radius: 2%;
+
+    h2 {
+      font-family: $secondaryFontFamily;
+    }
+
+    form {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+
+      width: 400px;
+
+      .inputContainer {
+        display: flex;
+        flex-direction: column;
+
+        width: 100%;
+        padding-top: 5px;
+
+        label {
+          padding: 5px 0;
+        }
+
+        input,
+        select {
+          line-height: 80%;
+          font-size: x-large;
+        }
+
+        p {
+          margin: 0;
+          padding-top: 5px;
+          font-size: large;
+          height: 26px;
+
+          color: rgb(182, 21, 21);
+        }
+      }
+
+      .buttonContainer {
+        margin-top: 40px;
+        margin-bottom: 30px;
+        padding: 10px 0;
+        width: 100%;
+
+        button {
+          width: 100%;
+          line-height: 100%;
+          font-size: x-large;
+          font-family: $primaryFontFamily;
+        }
+      }
+    }
+  }
 }
 
-// .formLine {
-//   width: 100%;
-// }
-
-.inputContainer {
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  padding: 10px;
+@media only screen and (max-width: 900px) {
+  .innerContainer {
+    width: 100%;
+  }
 }
+@media only screen and (max-width: 500px) {
+  form {
+    width: 100%;
 
-label {
-  padding: 5px 0;
-}
-
-.innerContainer {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  width: 50%;
-
-  background-color: $bgColor;
-  border-radius: 2%;
-}
-
-h2 {
-  font-family: $secondaryFontFamily;
-}
-
-form {
-  display: flex;
-  align-items: flex-start;
-  justify-content: center;
-  flex-direction: column;
-  width: 400px;
-}
-
-input,
-select {
-  line-height: 80%;
-  font-size: x-large;
-}
-
-button {
-  line-height: 100%;
-  font-size: x-large;
-  font-family: $primaryFontFamily;
-}
-
-.buttonContainer {
-  margin-top: 40px;
-  margin-bottom: 30px;
-  padding: 10px;
-  width: 100%;
-}
-button {
-  width: 100%;
+    .inputContainer,
+    .buttonContainer {
+      width: 80%;
+    }
+  }
 }
 </style>

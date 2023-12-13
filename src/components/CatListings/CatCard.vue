@@ -37,20 +37,29 @@
           </button>
         </router-link>
 
-        <button class="delete" @click="catsStore.DELETE_CAT(cat.id)">
+        <button class="delete" @click="openDeleteModal">
           <font-awesome-icon :icon="['fas', 'trash']" class="icon" />
           Delete
         </button>
       </div>
-
-      <adopt-modal
-        v-if="showAdoptModal"
-        v-on-click-outside="closeModal"
-        :cat="cat"
-        @close="closeModal"
-      />
     </div>
   </div>
+
+  <adopt-modal
+    v-if="showAdoptModal"
+    v-on-click-outside="closeModal"
+    :cat="cat"
+    action="adopt"
+    @close="closeModal"
+  />
+
+  <adopt-modal
+    v-if="showDeleteModal"
+    v-on-click-outside="closeDeleteModal"
+    :cat="cat"
+    action="delete"
+    @close="closeDeleteModal"
+  />
 </template>
 
 <script lang="ts" setup>
@@ -68,6 +77,7 @@ const userStore = useUserStore()
 const catsStore = useCatsStore()
 
 const showAdoptModal = ref<boolean>(false)
+const showDeleteModal = ref<boolean>(false)
 
 const props = defineProps({
   cat: {
@@ -82,6 +92,14 @@ const openModal = () => {
 
 const closeModal = () => {
   showAdoptModal.value = false
+}
+
+const openDeleteModal = () => {
+  showDeleteModal.value = true
+}
+
+const closeDeleteModal = () => {
+  showDeleteModal.value = false
 }
 </script>
 

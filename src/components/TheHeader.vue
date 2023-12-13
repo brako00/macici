@@ -2,6 +2,7 @@
   <header>
     <div class="container">
       <router-link :to="{ name: 'home' }" class="nameContainer">
+        <!-- <img src="../../public/paw.png" alt="Logo image" /> -->
         Meow Matchmakers
       </router-link>
 
@@ -32,25 +33,29 @@ import { useUserStore } from "@/stores/user"
 
 const userStore = useUserStore()
 </script>
+
 <style lang="scss" scoped>
 @import "@/assets/globalComponents.scss";
 
 header {
   width: 100%;
-  height: 55px;
+
+  height: 65px;
+
   .container {
     position: fixed;
     top: 0px;
     left: 0px;
     width: 100%;
-    height: 70px;
+    height: max-content;
+
     background-color: $bgColor;
     display: flex;
     justify-content: space-between;
     flex-wrap: nowrap;
     z-index: 1;
     .nameContainer {
-      padding: auto;
+      padding: 10px;
       margin-left: 15px;
       font-size: 200%;
       font-family: $secondaryFontFamily;
@@ -61,7 +66,7 @@ header {
     }
     .imageContainer {
       padding: auto;
-      margin-right: 10px;
+
       display: flex;
       align-items: center;
       img,
@@ -97,4 +102,10 @@ header {
 a {
   margin-right: 20px;
 }
+
+// @media only screen and (max-width: 406px) {
+//   .container {
+//     height: max-content;
+//   }
+// }
 </style>

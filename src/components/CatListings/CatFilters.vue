@@ -1,5 +1,5 @@
 <template>
-  <div class="filterContainer">
+  <div class="filterContainer otherClass">
     <div class="searchName">
       <h2>Search by name:</h2>
       <div class="inputContainer">
@@ -63,6 +63,9 @@
       />
     </div>
   </div>
+  <button v-if="type === 'sm'" class="filtersButton" @click="changeStyle()">
+    Filters
+  </button>
 </template>
 
 <script lang="ts" setup>
@@ -70,7 +73,7 @@ import RadioButton from "@/components/Shared/RadioButton.vue"
 import CheckBox from "@/components/Shared/CheckBox.vue"
 
 import { useUserStore } from "@/stores/user"
-import { computed } from "vue"
+import { computed, onMounted, onUnmounted, ref } from "vue"
 
 const userStore = useUserStore()
 
@@ -83,12 +86,91 @@ const nameSearchTerm = computed({
     userStore.UPDATE_NAME_SEARCH_TERM(name)
   }
 })
+
+const changeStyle = () => {
+  const element = document.querySelector(".filterContainer")
+
+  element?.classList.toggle("new-class")
+}
+
+const hideFilters = () => {
+  const element = document.querySelector(".filterContainer")
+  element?.classList.remove("otherClass")
+  element?.classList.add("hide-class")
+}
+
+const showFilters = () => {
+  const element = document.querySelector(".filterContainer")
+  element?.classList.add("otherClass")
+  element?.classList.remove("hide-class")
+}
+
+//deciding on window type on window resize
+const useBreakpoints = () => {
+  let windowWidth = ref(window.innerWidth)
+
+  const onWidthChange = () => (windowWidth.value = window.innerWidth)
+  onMounted(() => window.addEventListener("resize", onWidthChange))
+  onUnmounted(() => window.removeEventListener("resize", onWidthChange))
+
+  const type = computed(() => {
+    if (windowWidth.value < 700) {
+      console.log(type.value)
+      hideFilters()
+      return "sm"
+    } else {
+      console.log(type.value)
+      showFilters()
+      return "lg"
+    }
+  })
+
+  return { type }
+}
+
+const { type } = useBreakpoints()
 </script>
 
 <style lang="scss" scoped>
 @import "@/assets/globalComponents.scss";
+
+.filtersButton {
+  background-color: $bgColor;
+  font-family: $primaryFontFamily;
+  font-size: 200%;
+  font-weight: 600;
+
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+
+  border: solid;
+  border-radius: 5%;
+
+  &:hover {
+    background-color: $buttonBgColor;
+  }
+}
+
+.new-class {
+  display: block;
+  width: 100%;
+  background-color: red;
+}
+
+.hide-class {
+  display: none;
+}
+
+.otherClass {
+  width: 250px;
+  position: sticky;
+  top: 80px;
+}
+
 .filterContainer {
   font-family: $primaryFontFamily;
+
   .sortBy,
   .sortType,
   .filters {

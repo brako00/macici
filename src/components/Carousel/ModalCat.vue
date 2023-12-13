@@ -27,15 +27,16 @@
         class="adoptButton"
         @click="openAdoptModal"
       />
-
-      <adopt-modal
-        v-if="showAdoptModal"
-        v-on-click-outside="closeAdoptModal"
-        :cat="cat"
-        @close="$emit('close'), closeAdoptModal"
-      />
     </div>
   </div>
+
+  <adopt-modal
+    v-if="showAdoptModal"
+    v-on-click-outside="closeAdoptModal"
+    :cat="cat"
+    action="adopt"
+    @close="$emit('close'), closeAdoptModal"
+  />
 </template>
 
 <script lang="ts" setup>

@@ -7,7 +7,6 @@
         type="checkbox"
         class="checkbox"
         :checked="props.isChecked"
-        @change="handleChange(), props.action"
       />
       <label for="props.value"> {{ props.value }} </label>
     </div>
@@ -43,6 +42,8 @@ const handleChange = () => {
 
   if (props.value === "Black fur color")
     userStore.blackChecked = !userStore.blackChecked
+
+  if (props.value === "adopted") props.action
 }
 </script>
 
@@ -89,7 +90,7 @@ div {
   width: 100%;
 }
 
-// .inner:hover ~ input {
-//   background-color: $buttonBgColor;
-// }
+div:hover > input {
+  background-color: $buttonBgColor;
+}
 </style>
