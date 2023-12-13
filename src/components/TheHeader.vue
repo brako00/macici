@@ -7,22 +7,38 @@
       </router-link>
 
       <div class="imageContainer">
-        <div
-          v-if="userStore.adminLoggedIn"
-          class="signOut"
-          @click="userStore.adminLoggedIn = false"
-        >
-          Sign Out
-        </div>
-
         <router-link :to="{ name: 'admin' }">
-          <img
-            v-if="!userStore.adminLoggedIn"
-            src="../../user.png"
-            alt="User"
-          />
-          <img v-else src="../../setting.png" alt="Admin" />
-        </router-link>
+          <img v-if="!userStore.adminLoggedIn" src="../../user.png" alt="User"
+        /></router-link>
+
+        <div v-if="userStore.adminLoggedIn">
+          <div v-if="type === 'sm'" class="dropdown">
+            <button @click="showDropdown()">
+              <img src="../../setting.png" alt="Admin" />
+            </button>
+            <div class="dropdownContent hide-class">
+              <div
+                class="dropdownLink"
+                @click="userStore.adminLoggedIn = false"
+              >
+                Sign Out
+              </div>
+              <router-link :to="{ name: 'admin' }" class="dropdownLink">
+                Create cat
+              </router-link>
+            </div>
+          </div>
+
+          <div v-else class="adminSignIn">
+            <div class="signOut" @click="userStore.adminLoggedIn = false">
+              Sign Out
+            </div>
+
+            <router-link :to="{ name: 'admin' }">
+              <img src="../../setting.png" alt="Admin" />
+            </router-link>
+          </div>
+        </div>
       </div>
     </div>
   </header>
@@ -30,17 +46,96 @@
 
 <script lang="ts" setup>
 import { useUserStore } from "@/stores/user"
+import { ref, onMounted, onUnmounted, computed } from "vue"
 
 const userStore = useUserStore()
+
+const useBreakpoints = () => {
+  let windowWidth = ref(window.innerWidth)
+
+  const onWidthChange = () => (windowWidth.value = window.innerWidth)
+  onMounted(() => window.addEventListener("resize", onWidthChange))
+  onUnmounted(() => window.removeEventListener("resize", onWidthChange))
+
+  const type = computed(() => {
+    if (windowWidth.value < 700) {
+      return "sm"
+    } else {
+      return "lg"
+    }
+  })
+
+  return { type }
+}
+
+const { type } = useBreakpoints()
+
+const showDropdown = () => {
+  const element = document.querySelector(".dropdownContent")
+
+  element?.classList.toggle("hide-class")
+}
 </script>
 
 <style lang="scss" scoped>
 @import "@/assets/globalComponents.scss";
 
+.adminSignIn {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+button {
+  background-color: $bgColor;
+  border: 0;
+}
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.hide-class {
+  display: none;
+}
+
+.dropdownContent {
+  position: absolute;
+  right: 0;
+  background-color: $bgColor;
+  min-width: 160px;
+  z-index: 1;
+
+  border-radius: 10%;
+}
+
+.dropdownLink {
+  font-family: $primaryFontFamily;
+  font-size: x-large;
+  text-decoration: none;
+  color: #000;
+
+  padding: 10px;
+  margin: 0;
+
+  display: flex;
+  flex-wrap: wrap;
+
+  border-bottom: solid #000 2px;
+  border-radius: 10%;
+}
+
+// .dropdown:hover .dropdownContent {
+//   display: block;
+// }
+
 header {
   width: 100%;
 
   height: 65px;
+  //115
 
   .container {
     position: fixed;
@@ -103,9 +198,9 @@ a {
   margin-right: 20px;
 }
 
-// @media only screen and (max-width: 406px) {
-//   .container {
-//     height: max-content;
-//   }
-// }
+@media only screen and (max-width: 426px) {
+  header {
+    height: 115px;
+  }
+}
 </style>

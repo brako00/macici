@@ -90,6 +90,7 @@ const nameSearchTerm = computed({
 const changeStyle = () => {
   const element = document.querySelector(".filterContainer")
 
+  element?.classList.toggle("hide-class")
   element?.classList.toggle("new-class")
 }
 
@@ -153,9 +154,19 @@ const { type } = useBreakpoints()
 }
 
 .new-class {
-  display: block;
+  position: fixed;
+  top: 0;
+  left: 0;
   width: 100%;
-  background-color: red;
+  height: 100%;
+  background-color: white;
+
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: flex-start;
 }
 
 .hide-class {

@@ -188,72 +188,71 @@ const closeModal = () => {
 
   font-family: $primaryFontFamily;
   font-size: x-large;
+}
+.innerContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
 
-  .innerContainer {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
+  width: 50%;
 
-    width: 50%;
+  background-color: $bgColor;
+  border-radius: 2%;
+}
 
-    background-color: $bgColor;
-    border-radius: 2%;
+h2 {
+  font-family: $secondaryFontFamily;
+}
 
-    h2 {
-      font-family: $secondaryFontFamily;
-    }
+form {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
 
-    form {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-direction: column;
+  width: 400px;
+}
 
-      width: 400px;
+.inputContainer {
+  display: flex;
+  flex-direction: column;
 
-      .inputContainer {
-        display: flex;
-        flex-direction: column;
+  width: 100%;
+  padding-top: 5px;
+}
 
-        width: 100%;
-        padding-top: 5px;
+input,
+select {
+  line-height: 80%;
+  font-size: x-large;
+}
 
-        label {
-          padding: 5px 0;
-        }
+label {
+  padding: 5px 0;
+}
 
-        input,
-        select {
-          line-height: 80%;
-          font-size: x-large;
-        }
+p {
+  margin: 0;
+  padding-top: 5px;
+  font-size: large;
+  height: 26px;
 
-        p {
-          margin: 0;
-          padding-top: 5px;
-          font-size: large;
-          height: 26px;
+  color: rgb(182, 21, 21);
+}
 
-          color: rgb(182, 21, 21);
-        }
-      }
+.buttonContainer {
+  margin-top: 40px;
+  margin-bottom: 30px;
+  padding: 10px 0;
+  width: 100%;
+}
 
-      .buttonContainer {
-        margin-top: 40px;
-        margin-bottom: 30px;
-        padding: 10px 0;
-        width: 100%;
-
-        button {
-          width: 100%;
-          line-height: 100%;
-          font-size: x-large;
-          font-family: $primaryFontFamily;
-        }
-      }
-    }
-  }
+button {
+  width: 100%;
+  line-height: 100%;
+  font-size: x-large;
+  font-family: $primaryFontFamily;
 }
 
 @media only screen and (max-width: 900px) {
@@ -264,11 +263,10 @@ const closeModal = () => {
 @media only screen and (max-width: 500px) {
   form {
     width: 100%;
-
-    .inputContainer,
-    .buttonContainer {
-      width: 80%;
-    }
+  }
+  .inputContainer,
+  .buttonContainer {
+    width: 80%;
   }
 }
 </style>
