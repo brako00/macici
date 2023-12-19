@@ -9,7 +9,8 @@ import {
   faChevronCircleRight,
   faClose,
   faTrash,
-  faEdit
+  faEdit,
+  faFilter
 } from "@fortawesome/free-solid-svg-icons"
 
 import App from "./App.vue"
@@ -22,6 +23,7 @@ library.add(faChevronCircleRight)
 library.add(faClose)
 library.add(faTrash)
 library.add(faEdit)
+library.add(faFilter)
 
 const pinia = createPinia()
 

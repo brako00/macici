@@ -21,7 +21,7 @@
 
     <action-button
       :text="actionUpperCase"
-      type="primary"
+      type="secondary"
       class="adoptButton"
       @click="
         $emit('close'),
@@ -83,6 +83,9 @@ defineEmits(["close"])
 
   font-size: large;
   font-family: $primaryFontFamily;
+
+  border: 2px solid black;
+  border-radius: 2%;
 
   .icon {
     height: 40px;

@@ -1,5 +1,7 @@
 import { render, screen } from "@testing-library/vue"
 import { createTestingPinia } from "@pinia/testing"
+
+import { RouterLinkStub } from "@vue/test-utils"
 import userEvent from "@testing-library/user-event"
 
 import TheCats from "@/components/CatListings/TheCats.vue"
@@ -13,7 +15,11 @@ describe("TheCats", () => {
 
     render(TheCats, {
       global: {
-        plugins: [pinia]
+        plugins: [pinia],
+        stubs: {
+          FontAwesomeIcon: true,
+          RouterLink: RouterLinkStub
+        }
       }
     })
     return { catsStore }
@@ -45,5 +51,17 @@ describe("TheCats", () => {
 
     const allCats = await screen.findAllByRole("catCard")
     expect(allCats).toHaveLength(26)
+  })
+
+  it("shows error message if there are no matches", () => {
+    const { catsStore } = renderTheCats()
+    //@ts-expect-error Getters are readonly
+    catsStore.FILTERED_CATS = []
+
+    const errorMessage = screen.getByText(
+      "Unfortunatelly we can't find your desired cat"
+    )
+
+    expect(errorMessage).toBeInTheDocument()
   })
 })

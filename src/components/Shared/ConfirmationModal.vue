@@ -8,12 +8,12 @@
 
     <h2>
       You have successfully {{ action }}
-      <span class="catName">{{ cat.name }}</span>
+      <span class="catName">{{ name }}</span>
     </h2>
 
     <action-button
       text="OK"
-      type="primary"
+      type="secondary"
       class="confirmationButton"
       @click="$emit('close')"
     />
@@ -22,12 +22,10 @@
 
 <script lang="ts" setup>
 import ActionButton from "@/components/Shared/ActionButton.vue"
-import type { PropType } from "vue"
-import type { Cat } from "@/api/types"
 
 defineProps({
-  cat: {
-    type: Object as PropType<Cat>,
+  name: {
+    type: String,
     required: true
   },
   action: {
@@ -62,6 +60,9 @@ defineEmits(["close"])
 
   font-size: large;
   font-family: $primaryFontFamily;
+
+  border: 2px solid black;
+  border-radius: 2%;
 
   .icon {
     height: 40px;

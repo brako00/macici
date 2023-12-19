@@ -6,12 +6,7 @@
 
     <div class="contentContainer">
       <div class="catContainer">
-        <cat-card
-          v-for="cat in displayedCats"
-          :key="cat.id"
-          :cat="cat"
-          role="catCard"
-        />
+        <cat-card v-for="cat in displayedCats" :key="cat.id" :cat="cat" />
       </div>
 
       <div v-if="isErrorMessage" class="errorMessage">

@@ -70,7 +70,7 @@ div {
     border-radius: 50%;
     transform: scale(0);
     transition: 100ms transform ease-in-out;
-    box-shadow: inset 1em 1em blueviolet;
+    box-shadow: inset 1em 1em $buttonColor;
   }
 
   input:checked::before {
@@ -79,6 +79,6 @@ div {
 }
 
 div:hover > input {
-  background-color: $buttonBgColor;
+  background-color: $bgColor;
 }
 </style>

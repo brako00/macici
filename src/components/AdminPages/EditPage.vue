@@ -62,24 +62,8 @@
           <input id="adopted" v-model="newCat.adopted" type="checkbox" />
         </div>
 
-        <!-- <div class="inputContainer">
-          <check-box
-            id="adopted"
-            :is-checked="newCat.adopted"
-            :action="userStore.UPDATE_ADOPTED"
-            value="adopted"
-          />
-        </div> -->
-
-        <!-- <div>
-        <p>Please correct the following error(s):</p>
-        <ul>
-          <li v-for="error in errors" :key="error">{{ error }}</li>
-        </ul>
-      </div> -->
-
         <div class="buttonContainer">
-          <button type="submit" @click="checkForm">Update cat</button>
+          <action-button type="primary" text="Update cat" @click="checkForm" />
         </div>
       </form>
     </div>
@@ -88,26 +72,24 @@
   <confirmation-modal
     v-if="showConfirmationModal"
     v-on-click-outside="closeModal"
-    :cat="newCat"
+    :name="newCat.name"
     action="edited"
     @close="closeModal"
   />
 </template>
 
 <script lang="ts" setup>
-import ConfirmationModal from "./Shared/ConfirmationModal.vue"
-import CheckBox from "./Shared/CheckBox.vue"
+import ActionButton from "@/components/Shared/ActionButton.vue"
+import ConfirmationModal from "@/components/Shared/ConfirmationModal.vue"
 import { computed, ref } from "vue"
 
 import { useCatsStore } from "@/stores/cats"
-import { useUserStore } from "@/stores/user"
 import { useRoute } from "vue-router"
 
 import { vOnClickOutside } from "@vueuse/components"
 import type { Cat } from "@/api/types"
 
 const catsStore = useCatsStore()
-const userStore = useUserStore()
 
 const numbers = /\d/
 
@@ -250,7 +232,7 @@ const closeModal = () => {
     border-radius: 20%;
     transform: scale(0);
     transition: 100ms transform ease-in-out;
-    box-shadow: inset 1em 1em blueviolet;
+    box-shadow: inset 1em 1em $buttonColor;
   }
 
   input[type="checkbox"]:checked::before {
@@ -260,6 +242,7 @@ const closeModal = () => {
 
 label {
   padding: 5px 0;
+  font-weight: 500;
 }
 
 .innerContainer {
@@ -292,18 +275,14 @@ select {
 }
 
 button {
-  line-height: 100%;
-  font-size: x-large;
-  font-family: $primaryFontFamily;
+  width: 100%;
+  height: 40px;
 }
 
 .buttonContainer {
   margin-top: 40px;
   margin-bottom: 30px;
   padding: 10px 0;
-  width: 100%;
-}
-button {
   width: 100%;
 }
 

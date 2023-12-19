@@ -8,6 +8,9 @@ import { createCat } from "../../utils/createCat"
 
 vi.mock("axios")
 const axiosGetMock = axios.get as Mock
+const axiosPostMock = axios.post as Mock
+const axiosDeleteMock = axios.delete as Mock
+const axiosPutMock = axios.put as Mock
 
 describe("state", () => {
   beforeEach(() => {
@@ -32,10 +35,12 @@ describe("actions", () => {
 
   describe("FETCH_CATS", () => {
     it("makes API request and stores received cats", async () => {
-      axiosGetMock.mockResolvedValue({ data: ["Cat 1", "Cat 2"] })
+      const cat1 = createCat({ name: "Koki" })
+      const cat2 = createCat({ name: "Kiki", id: 2 })
+      axiosGetMock.mockResolvedValue({ data: [cat1, cat2] })
       const store = useCatsStore()
       await store.FETCH_CATS()
-      expect(store.cats).toEqual(["Cat 1", "Cat 2"])
+      expect(store.cats).toEqual([cat1, cat2])
     })
   })
 })
@@ -137,7 +142,7 @@ describe("getters", () => {
       })
     })
 
-    it("finds cats with black fur color", () => {
+    it("finds cats with user's search term", () => {
       const userStore = useUserStore()
       userStore.nameSearchTerm = "MiKI"
       const store = useCatsStore()

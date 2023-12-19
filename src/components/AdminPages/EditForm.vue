@@ -1,9 +1,9 @@
 <template>
   <div class="outerContainer">
     <div class="innerContainer">
-      <h2>Create new cat</h2>
+      <h2>{{ capitalizedAction }} new cat</h2>
 
-      <form autocomplete="off">
+      <form autocomplete="on">
         <div class="inputContainer">
           <label for="name">*Name:</label>
           <input
@@ -51,7 +51,7 @@
             id="image"
             v-model="newCat.image"
             class="formLine"
-            type="url"
+            type="text"
             @focusout="checkFormImage"
           />
 
@@ -59,31 +59,46 @@
         </div>
 
         <div class="buttonContainer">
-          <button type="submit" @click="checkForm">Create cat</button>
+          <action-button
+            type="primary"
+            :text="capitalizedAction + ' cat'"
+            @click="checkForm"
+          />
         </div>
       </form>
     </div>
   </div>
-
-  <confirmation-modal
-    v-if="showConfirmationModal"
-    v-on-click-outside="closeModal"
-    :cat="newCat"
-    action="created"
-    @close="closeModal"
-  />
 </template>
 
 <script lang="ts" setup>
-import ConfirmationModal from "./Shared/ConfirmationModal.vue"
-import { ref } from "vue"
+import ActionButton from "@/components/Shared/ActionButton.vue"
 import type { Cat } from "@/api/types"
-
-import { vOnClickOutside } from "@vueuse/components"
+import { ref } from "vue"
 
 import { useCatsStore } from "@/stores/cats"
 
 const catsStore = useCatsStore()
+
+const props = defineProps({
+  action: {
+    type: String,
+    required: true
+  },
+  modal: {
+    type: Function,
+    required: true
+  }
+})
+
+const emit = defineEmits(["updateCat"])
+
+const handleChange = (event) => {
+  emit("updateCat", event.target.value.toUpperCase())
+}
+
+const word = props.action
+
+const capitalizedAction = word.charAt(0).toUpperCase() + word.slice(1)
 
 const newCat = ref<Cat>({
   id: 0,
@@ -113,15 +128,6 @@ const errorTextAge = ref<string>("")
 const errorTextColor = ref<string>("")
 const errorTextImage = ref<string>("")
 
-// const refreshCat = () => {
-//   newCat.value.id = 0
-//   newCat.value.adopted = false
-//   newCat.value.name = ""
-//   newCat.value.color = ""
-//   newCat.value.age = 1
-//   newCat.value.image = ""
-// }
-
 //checking input fields
 const checkFormName = () => {
   if (newCat.value.name === "") {
@@ -148,6 +154,13 @@ const checkFormColor = () => {
 const checkFormImage = () => {
   if (newCat.value.image === "") {
     errorTextImage.value = "Image is required"
+  } else if (
+    // eslint-disable-next-line no-useless-escape
+    !/^(http(s):\/\/.)[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)$/g.test(
+      newCat.value.image
+    )
+  ) {
+    errorTextImage.value = "Image should be a valid URL"
   } else errorTextImage.value = ""
 }
 
@@ -160,19 +173,9 @@ const checkForm = () => {
     errorTextImage.value === ""
   ) {
     catsStore.ADD_CAT(newCat.value)
-    openModal()
-    // refreshCat()
+    props.modal()
+    handleChange(newCat)
   }
-}
-
-const showConfirmationModal = ref<boolean>(false)
-
-const openModal = () => {
-  showConfirmationModal.value = true
-}
-
-const closeModal = () => {
-  showConfirmationModal.value = false
 }
 </script>
 
@@ -226,6 +229,7 @@ input,
 select {
   line-height: 80%;
   font-size: x-large;
+  font-family: $primaryFontFamily;
 }
 
 label {
@@ -250,9 +254,7 @@ p {
 
 button {
   width: 100%;
-  line-height: 100%;
-  font-size: x-large;
-  font-family: $primaryFontFamily;
+  height: 40px;
 }
 
 @media only screen and (max-width: 900px) {

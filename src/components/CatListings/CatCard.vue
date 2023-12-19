@@ -1,5 +1,5 @@
 <template>
-  <div class="catOutline">
+  <div class="catOutline" role="catCard">
     <div class="catCard">
       <img :src="cat.image" alt="Image of the cat" />
 
@@ -69,12 +69,10 @@ import type { Cat } from "@/api/types"
 import AdoptModal from "@/components/Shared/AdoptModal.vue"
 
 import { useUserStore } from "@/stores/user"
-import { useCatsStore } from "@/stores/cats"
 
 import { vOnClickOutside } from "@vueuse/components"
 
 const userStore = useUserStore()
-const catsStore = useCatsStore()
 
 const showAdoptModal = ref<boolean>(false)
 const showDeleteModal = ref<boolean>(false)

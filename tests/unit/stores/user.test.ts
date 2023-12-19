@@ -1,5 +1,7 @@
 import { createPinia, setActivePinia } from "pinia"
 
+import { createCat } from "../../utils/createCat"
+
 import { useUserStore } from "@/stores/user"
 
 describe("state", () => {
@@ -25,6 +27,21 @@ describe("state", () => {
   it("keeps track if descending is checked", () => {
     const store = useUserStore()
     expect(store.descendingChecked).toBe(false)
+  })
+
+  it("keeps track if younger than six is checked", () => {
+    const store = useUserStore()
+    expect(store.sixChecked).toBe(false)
+  })
+
+  it("keeps track if younger than ten is checked", () => {
+    const store = useUserStore()
+    expect(store.tenChecked).toBe(false)
+  })
+
+  it("keeps track if black color fur is checked", () => {
+    const store = useUserStore()
+    expect(store.blackChecked).toBe(false)
   })
 
   it("stores ages of cats that are less than 6 months old", () => {
@@ -82,6 +99,15 @@ describe("actions", () => {
       const store = useUserStore()
       store.UPDATE_NAME_SEARCH_TERM("Medo")
       expect(store.nameSearchTerm).toBe("Medo")
+    })
+  })
+
+  describe("UPDATE_ADOPTED", () => {
+    it("updates adopt flag of cat", () => {
+      const cat = createCat({ adopted: false })
+      const store = useUserStore()
+      store.UPDATE_ADOPTED(cat)
+      expect(cat.adopted).toBe(true)
     })
   })
 })

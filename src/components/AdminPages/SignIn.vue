@@ -15,6 +15,7 @@
           <div class="inputContainer">
             <h3>Password:</h3>
             <input
+              id="password"
               v-model="password"
               type="password"
               placeholder="Pass1234"
@@ -150,10 +151,6 @@ const checkFormPassword = () => {
         width: 100%;
         height: 70px;
 
-        span {
-          color: $bgColor;
-        }
-
         p {
           margin-bottom: 0;
           color: rgb(182, 21, 21);
@@ -168,12 +165,20 @@ const checkFormPassword = () => {
           line-height: 80%;
           font-size: x-large;
           width: 98%;
+
+          font-family: $primaryFontFamily;
         }
 
         .signinbutton {
           width: 100%;
-          height: 80%;
+          height: 100%;
           margin-bottom: 20px;
+          font-weight: 600;
+          background-color: $buttonBgColor;
+
+          &:hover {
+            background-color: $buttonHoverBgColor;
+          }
         }
       }
     }

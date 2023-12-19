@@ -63,12 +63,14 @@
       />
     </div>
   </div>
-  <button v-if="type === 'sm'" class="filtersButton" @click="changeStyle()">
-    Filters
-  </button>
+  <div v-if="type === 'sm'" class="filtersButton" @click="changeStyle()">
+    <action-button type="primary" text="Filters" class="filterButton" />
+    <font-awesome-icon :icon="['fas', 'filter']" />
+  </div>
 </template>
 
 <script lang="ts" setup>
+import ActionButton from "@/components/Shared/ActionButton.vue"
 import RadioButton from "@/components/Shared/RadioButton.vue"
 import CheckBox from "@/components/Shared/CheckBox.vue"
 
@@ -115,6 +117,8 @@ const useBreakpoints = () => {
   onUnmounted(() => window.removeEventListener("resize", onWidthChange))
 
   const type = computed(() => {
+    console.log("window", windowWidth.value)
+
     if (windowWidth.value < 700) {
       console.log(type.value)
       hideFilters()
@@ -135,21 +139,27 @@ const { type } = useBreakpoints()
 <style lang="scss" scoped>
 @import "@/assets/globalComponents.scss";
 
-.filtersButton {
-  background-color: $bgColor;
-  font-family: $primaryFontFamily;
-  font-size: 200%;
-  font-weight: 600;
+.filterButton {
+  border: 0;
+}
 
+.filtersButton {
   position: fixed;
   right: 20px;
   bottom: 20px;
+  width: max-content;
 
   border: solid;
   border-radius: 5%;
 
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: center;
+  align-items: center;
+
+  background-color: $buttonBgColor;
   &:hover {
-    background-color: $buttonBgColor;
+    background-color: $buttonHoverBgColor;
   }
 }
 
@@ -181,6 +191,7 @@ const { type } = useBreakpoints()
 
 .filterContainer {
   font-family: $primaryFontFamily;
+  padding-left: 10px;
 
   .sortBy,
   .sortType,
@@ -205,6 +216,8 @@ const { type } = useBreakpoints()
     border: 4px solid $bgColor;
   }
   .textInput {
+    font-family: $primaryFontFamily;
+
     width: 100%;
     line-height: 80%;
     font-size: large;

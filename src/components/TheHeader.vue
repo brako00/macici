@@ -7,11 +7,11 @@
       </router-link>
 
       <div class="imageContainer">
-        <router-link :to="{ name: 'admin' }">
-          <img v-if="!userStore.adminLoggedIn" src="../../user.png" alt="User"
+        <router-link v-if="!userStore.adminLoggedIn" :to="{ name: 'admin' }">
+          <img src="../../user.png" alt="User"
         /></router-link>
 
-        <div v-if="userStore.adminLoggedIn">
+        <div v-else class="elseDiv">
           <div v-if="type === 'sm'" class="dropdown">
             <button @click="showDropdown()">
               <img src="../../setting.png" alt="Admin" />
@@ -80,11 +80,19 @@ const showDropdown = () => {
 <style lang="scss" scoped>
 @import "@/assets/globalComponents.scss";
 
+.elseDiv {
+  height: 100%;
+  width: 100%;
+}
+
 .adminSignIn {
   display: flex;
   flex-direction: row;
   justify-content: center;
   align-items: center;
+
+  height: 100%;
+  width: 100%;
 }
 
 button {
@@ -125,11 +133,11 @@ button {
 
   border-bottom: solid #000 2px;
   border-radius: 10%;
-}
 
-// .dropdown:hover .dropdownContent {
-//   display: block;
-// }
+  &:hover {
+    background-color: $buttonBgColor;
+  }
+}
 
 header {
   width: 100%;
@@ -180,7 +188,8 @@ header {
   font-size: x-large;
 
   font-family: $primaryFontFamily;
-  margin-right: 20px;
+  // margin-right: 20px;
+  padding: 0 20px;
   height: 100%;
   width: 100%;
 
@@ -192,13 +201,14 @@ header {
 
 .signOut:hover {
   background-color: $buttonBgColor;
+  font-weight: 600;
 }
 
 a {
   margin-right: 20px;
 }
 
-@media only screen and (max-width: 426px) {
+@media only screen and (max-width: 438px) {
   header {
     height: 115px;
   }

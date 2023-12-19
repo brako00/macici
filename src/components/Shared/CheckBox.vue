@@ -65,10 +65,6 @@ div {
     border-radius: 20%;
     display: grid;
     place-content: center;
-
-    &:hover {
-      background-color: $buttonBgColor;
-    }
   }
 
   input::before {
@@ -78,7 +74,7 @@ div {
     border-radius: 20%;
     transform: scale(0);
     transition: 100ms transform ease-in-out;
-    box-shadow: inset 1em 1em blueviolet;
+    box-shadow: inset 1em 1em $buttonColor;
   }
 
   input:checked::before {
@@ -91,6 +87,6 @@ div {
 }
 
 div:hover > input {
-  background-color: $buttonBgColor;
+  background-color: $bgColor;
 }
 </style>
