@@ -50,8 +50,15 @@ import { ref, onMounted, onUnmounted, computed } from "vue"
 
 const userStore = useUserStore()
 
+const showDropdown = () => {
+  const element = document.querySelector(".dropdownContent")
+
+  element?.classList.toggle("hide-class")
+}
+
+//deciding on window size on window resize
 const useBreakpoints = () => {
-  let windowWidth = ref(window.innerWidth)
+  const windowWidth = ref(window.innerWidth)
 
   const onWidthChange = () => (windowWidth.value = window.innerWidth)
   onMounted(() => window.addEventListener("resize", onWidthChange))
@@ -65,16 +72,10 @@ const useBreakpoints = () => {
     }
   })
 
-  return { type }
+  return type
 }
 
-const { type } = useBreakpoints()
-
-const showDropdown = () => {
-  const element = document.querySelector(".dropdownContent")
-
-  element?.classList.toggle("hide-class")
-}
+const type = useBreakpoints()
 </script>
 
 <style lang="scss" scoped>
@@ -83,6 +84,10 @@ const showDropdown = () => {
 .elseDiv {
   height: 100%;
   width: 100%;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .adminSignIn {
@@ -136,6 +141,7 @@ button {
 
   &:hover {
     background-color: $buttonBgColor;
+    font-weight: 500;
   }
 }
 

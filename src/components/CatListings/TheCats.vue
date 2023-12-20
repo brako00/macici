@@ -19,7 +19,7 @@
         <action-button
           v-if="nextBatch"
           text="Show more"
-          type="secondary"
+          type="primary"
           @click="count++"
         />
       </div>
@@ -97,7 +97,8 @@ section {
   font-size: large;
 }
 .buttonContainer {
-  margin-top: 50px;
+  height: 50px;
+  margin: 50px 0px;
   display: flex;
   justify-content: center;
 }

@@ -130,10 +130,10 @@ const useBreakpoints = () => {
     }
   })
 
-  return { type }
+  return type
 }
 
-const { type } = useBreakpoints()
+const type = useBreakpoints()
 </script>
 
 <style lang="scss" scoped>

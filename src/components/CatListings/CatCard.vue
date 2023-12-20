@@ -107,7 +107,7 @@ const closeDeleteModal = () => {
   font-family: $primaryFontFamily;
   display: flex;
   height: 550px;
-  width: 400px;
+  max-width: 400px;
 }
 .catCard {
   background-color: $bgColor;

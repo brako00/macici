@@ -1,7 +1,7 @@
 <template>
   <div class="outerContainer">
     <div class="innerContainer">
-      <img src="@/../public/setting.png" alt="image of admin" />
+      <img src="@/../setting.png" alt="image of admin" />
 
       <div class="signInContainer">
         <div class="inputFieldsContainer">
