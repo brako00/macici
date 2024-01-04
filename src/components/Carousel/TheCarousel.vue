@@ -8,22 +8,7 @@
             activeCat: carouselCats.indexOf(cat) === activeIndex,
             subActiveCat: carouselCats.indexOf(cat) !== activeIndex
           }"
-          @click="openModal"
         >
-          <font-awesome-icon
-            v-if="carouselCats.indexOf(cat) === activeIndex"
-            :icon="['fas', 'chevron-circle-left']"
-            class="iconLeft"
-            @click="(direction = false), goingLeft()"
-          />
-
-          <font-awesome-icon
-            v-if="carouselCats.indexOf(cat) === activeIndex"
-            :icon="['fas', 'chevron-circle-right']"
-            class="iconRight"
-            @click="(direction = true), goingRight()"
-          />
-
           <img :src="cat.image" />
           <div class="catName">
             {{ cat.name }}
@@ -31,10 +16,24 @@
         </div>
       </div>
 
+      <div class="arrowsContainer">
+        <font-awesome-icon
+          :icon="['fas', 'chevron-circle-left']"
+          class="iconLeft"
+          @click="(direction = false), goingLeft()"
+        />
+
+        <font-awesome-icon
+          :icon="['fas', 'chevron-circle-right']"
+          class="iconRight"
+          @click="(direction = true), goingRight()"
+        />
+      </div>
+
       <modal-cat
         v-if="showModalCat"
         v-on-click-outside="closeModal"
-        :cat="carouselCats[1]"
+        :cat-i-d="carouselCats[1].id"
         @close="closeModal"
       />
     </div>
@@ -73,6 +72,14 @@ onMounted(async () => {
 
   pauseInterval()
   continueInterval()
+
+  setTimeout(() => {
+    const firstActive = document.querySelector(".activeCat")
+    if (firstActive !== null)
+      firstActive.addEventListener("click", () => {
+        openModal()
+      })
+  }, 500)
 })
 
 onBeforeUnmount(() => {
@@ -147,18 +154,27 @@ const goingLeft = () => {
 const displayedCats = () => {
   if (direction.value === true) {
     goingRight()
+
     const active = document.querySelectorAll(".subActiveCat")[1]
     stoppingOnHover(active)
+
+    active.addEventListener("click", () => {
+      openModal()
+    })
   } else {
     goingLeft()
+
     const active = document.querySelectorAll(".subActiveCat")[0]
     stoppingOnHover(active)
+
+    active.addEventListener("click", () => {
+      openModal()
+    })
   }
 }
 
 const openModal = () => {
   showModalCat.value = true
-  pauseInterval()
 }
 
 const closeModal = () => {
@@ -173,24 +189,9 @@ const closeModal = () => {
   display: none;
   padding: 15px;
 }
-// .activeCat {
-//   animation-name: move;
-//   animation-duration: 1.5s;
-//   animation-timing-function: ease-in-out;
-// }
-
-// @keyframes move {
-//   from {
-//     left: 0px;
-//   }
-//   to {
-//     left: 50px;
-//   }
-// }
 
 .activeCat {
   display: block;
-  position: relative;
 }
 
 .activeCat:hover {
@@ -209,9 +210,11 @@ const closeModal = () => {
   align-items: center;
   overflow: hidden;
 
+  position: relative;
+
   img {
-    height: 500px;
-    width: 700px;
+    max-height: 500px;
+    min-height: 350px;
     object-fit: fill;
     border-radius: 2%;
   }
@@ -225,17 +228,18 @@ const closeModal = () => {
 
   border-radius: 0 3px 3px 0;
   user-select: none;
+
+  color: $bgColor;
   position: absolute;
   bottom: 45%;
-  color: $bgColor;
 }
 
 .iconLeft {
-  left: 0px;
+  left: calc(50% - 380px);
 }
 
 .iconRight {
-  right: 0px;
+  right: calc(50% - 380px);
 }
 
 .catName {
@@ -246,5 +250,28 @@ const closeModal = () => {
   position: absolute;
   bottom: 8px;
   text-shadow: 2px 2px black;
+}
+
+@media only screen and (max-width: 800px) {
+  .subActiveCat {
+    display: none;
+  }
+
+  .carouselCat {
+    width: 100%;
+    box-sizing: border-box;
+
+    img {
+      width: 100%;
+    }
+  }
+
+  .iconLeft {
+    left: 0px;
+  }
+
+  .iconRight {
+    right: 0px;
+  }
 }
 </style>

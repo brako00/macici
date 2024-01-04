@@ -140,9 +140,6 @@ const checkForm = () => {
   ) {
     catsStore.UPDATE_CAT(newCat.value)
     openModal()
-    if (newCat.value.adopted) {
-      catsStore.DELETE_CAT(newCat.value.id)
-    }
   }
 }
 

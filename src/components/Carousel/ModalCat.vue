@@ -42,9 +42,9 @@
 <script lang="ts" setup>
 import AdoptModal from "@/components/Shared/AdoptModal.vue"
 import ActionButton from "@/components/Shared/ActionButton.vue"
-import type { PropType } from "vue"
-import type { Cat } from "@/api/types"
+import { vOnClickOutside } from "@vueuse/components"
 import { ref } from "vue"
+import { useCatsStore } from "@/stores/cats"
 
 const showAdoptModal = ref<boolean>(false)
 
@@ -56,12 +56,16 @@ const closeAdoptModal = () => {
   showAdoptModal.value = false
 }
 
-defineProps({
-  cat: {
-    type: Object as PropType<Cat>,
+const props = defineProps({
+  catID: {
+    type: Number,
     required: true
   }
 })
+const catsStore = useCatsStore()
+catsStore.GET_UNIQUE_CAT(props.catID)
+
+const cat = catsStore.uniqueCat
 
 defineEmits(["close"])
 </script>
@@ -70,9 +74,10 @@ defineEmits(["close"])
 @import "@/assets/globalComponents.scss";
 .modalContainer {
   position: fixed;
-  top: 20%;
-  left: auto;
-  width: 1400px;
+  top: 50%;
+  transform: translateY(-50%);
+
+  max-width: fit-content;
   height: fit-content;
 
   z-index: 999;
@@ -80,7 +85,6 @@ defineEmits(["close"])
   flex-direction: row;
 
   background-color: $bgColor;
-  transition: opacity 0.3s ease;
 
   .icon {
     height: 40px;
@@ -89,14 +93,17 @@ defineEmits(["close"])
     top: 0;
     right: 0;
     cursor: pointer;
+    background-color: $bgColor;
   }
 
   .catInfo {
     padding-left: 10px;
-    width: 25%;
+    min-width: 25%;
+    max-width: 100%;
     display: flex;
     justify-content: space-between;
     flex-direction: column;
+    box-sizing: border-box;
 
     padding: 20px;
 
@@ -130,8 +137,28 @@ defineEmits(["close"])
   }
 
   .modalImage {
-    width: 75%;
+    max-width: 100%;
+    min-width: 75%;
     height: fit-content;
+  }
+}
+
+@media only screen and (max-width: 1200px) {
+  .catInfo {
+    width: 100%;
+  }
+  .modalContainer {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 75%;
+  }
+}
+
+@media only screen and (max-width: 600px) {
+  .modalContainer {
+    height: max-content;
+    width: 100%;
   }
 }
 </style>

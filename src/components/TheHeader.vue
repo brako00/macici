@@ -57,25 +57,26 @@ const showDropdown = () => {
 }
 
 //deciding on window size on window resize
-const useBreakpoints = () => {
-  const windowWidth = ref(window.innerWidth)
+// const useBreakpoints = () => {
+//   const windowWidth = ref(window.innerWidth)
 
-  const onWidthChange = () => (windowWidth.value = window.innerWidth)
-  onMounted(() => window.addEventListener("resize", onWidthChange))
-  onUnmounted(() => window.removeEventListener("resize", onWidthChange))
+//   const onWidthChange = () => (windowWidth.value = window.innerWidth)
+//   onMounted(() => window.addEventListener("resize", onWidthChange))
+//   onUnmounted(() => window.removeEventListener("resize", onWidthChange))
 
-  const type = computed(() => {
-    if (windowWidth.value < 700) {
-      return "sm"
-    } else {
-      return "lg"
-    }
-  })
+//   const type = computed(() => {
+//     if (windowWidth.value < 700) {
+//       return "sm"
+//     } else {
+//       return "lg"
+//     }
+//   })
 
-  return type
-}
+//   return type
+// }
 
-const type = useBreakpoints()
+import myuseBreakpoints from "@/composables/myuseBreakpoints"
+const type = myuseBreakpoints(700)
 </script>
 
 <style lang="scss" scoped>

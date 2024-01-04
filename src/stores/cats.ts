@@ -14,6 +14,8 @@ export const useCatsStore = defineStore("cats", () => {
   const cats = ref(<Cat[]>[])
   const YOUNGEST_CATS = ref(<Cat[]>[])
 
+  const showAdopted = ref<boolean>(false)
+
   const uniqueCat = ref<Cat>({
     id: 0,
     adopted: false,
@@ -25,7 +27,9 @@ export const useCatsStore = defineStore("cats", () => {
 
   const FETCH_CATS = async () => {
     const recievedCats = await getCats()
-    cats.value = recievedCats.sort((a, b) => a.age - b.age)
+    cats.value = recievedCats
+      .sort((a, b) => a.age - b.age)
+      .filter((cat) => NON_ADOPTED_CATS(cat))
     YOUNGEST_CATS.value = cats.value.slice(0, 4)
   }
 
@@ -83,12 +87,23 @@ export const useCatsStore = defineStore("cats", () => {
     }
   })
 
+  const NON_ADOPTED_CATS = (cat: Cat) => {
+    if (showAdopted.value === false) {
+      if (cat.adopted === false) return true
+      return false
+    } else {
+      if (cat.adopted === true) return true
+      return false
+    }
+  }
+
   const FILTERED_CATS = computed(() => {
     return SORTED_CATS.value
       .filter((cat) => YOUNGER_THAN_6(cat))
       .filter((cat) => YOUNGER_THAN_10(cat))
       .filter((cat) => BLACK_CATS(cat))
       .filter((cat) => INCLUDE_BY_NAME(cat))
+      .filter((cat) => NON_ADOPTED_CATS(cat))
   })
 
   const ADD_CAT = async (newCat: Cat) => {
@@ -114,7 +129,18 @@ export const useCatsStore = defineStore("cats", () => {
     })
   }
 
+  const UPDATE_SHOWADOPTED = () => {
+    showAdopted.value = !showAdopted.value
+  }
+
+  const UPDATE_ADOPTED = async (cat: Cat) => {
+    cat.adopted = !cat.adopted
+  }
+
   return {
+    UPDATE_ADOPTED,
+    UPDATE_SHOWADOPTED,
+    showAdopted,
     cats,
     uniqueCat,
     YOUNGEST_CATS,

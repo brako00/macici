@@ -62,6 +62,24 @@
         value="Black fur color"
       />
     </div>
+
+    <div>
+      <check-box
+        v-if="userStore.adminLoggedIn"
+        :is-checked="catsStore.showAdopted"
+        :action="catsStore.UPDATE_SHOWADOPTED"
+        value="Show adopted"
+      />
+    </div>
+
+    <div>
+      <action-button
+        type="primary"
+        text="Clear filters"
+        class="clearButton"
+        @click="userStore.CLEAR_FILTERS"
+      />
+    </div>
   </div>
   <div v-if="type === 'sm'" class="filtersButton" @click="changeStyle()">
     <action-button type="primary" text="Filters" class="filterButton" />
@@ -75,9 +93,11 @@ import RadioButton from "@/components/Shared/RadioButton.vue"
 import CheckBox from "@/components/Shared/CheckBox.vue"
 
 import { useUserStore } from "@/stores/user"
+import { useCatsStore } from "@/stores/cats"
 import { computed, onMounted, onUnmounted, ref } from "vue"
 
 const userStore = useUserStore()
+const catsStore = useCatsStore()
 
 //search by name
 const nameSearchTerm = computed({
@@ -139,12 +159,16 @@ const type = useBreakpoints()
 <style lang="scss" scoped>
 @import "@/assets/globalComponents.scss";
 
+.clearButton {
+  width: 100%;
+}
 .filterButton {
   border: 0;
 }
 
 .filtersButton {
   position: fixed;
+  padding: 5px;
   right: 20px;
   bottom: 20px;
   width: max-content;
@@ -177,6 +201,19 @@ const type = useBreakpoints()
   flex-wrap: wrap;
   justify-content: center;
   align-items: flex-start;
+
+  animation-name: slideIn;
+  animation-duration: 1s;
+  animation-timing-function: ease-in-out;
+}
+
+@keyframes slideIn {
+  from {
+    left: -100%;
+  }
+  to {
+    left: 0;
+  }
 }
 
 .hide-class {

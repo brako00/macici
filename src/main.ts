@@ -10,7 +10,8 @@ import {
   faClose,
   faTrash,
   faEdit,
-  faFilter
+  faFilter,
+  faPaw
 } from "@fortawesome/free-solid-svg-icons"
 
 import App from "./App.vue"
@@ -24,6 +25,7 @@ library.add(faClose)
 library.add(faTrash)
 library.add(faEdit)
 library.add(faFilter)
+library.add(faPaw)
 
 const pinia = createPinia()
 

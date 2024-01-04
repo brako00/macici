@@ -23,11 +23,7 @@
       :text="actionUpperCase"
       type="secondary"
       class="adoptButton"
-      @click="
-        $emit('close'),
-          userStore.UPDATE_ADOPTED(cat),
-          catsStore.DELETE_CAT(cat.id)
-      "
+      @click="$emit('close'), setAction()"
     />
   </div>
 </template>
@@ -36,10 +32,8 @@
 import ActionButton from "@/components/Shared/ActionButton.vue"
 import { type PropType } from "vue"
 import type { Cat } from "@/api/types"
-import { useUserStore } from "@/stores/user"
 import { useCatsStore } from "@/stores/cats"
 
-const userStore = useUserStore()
 const catsStore = useCatsStore()
 
 const props = defineProps({
@@ -55,6 +49,12 @@ const props = defineProps({
 
 const actionUpperCase =
   props.action.charAt(0).toUpperCase() + props.action.slice(1)
+
+const setAction = async () => {
+  if (props.action === "adopt") {
+    catsStore.UPDATE_ADOPTED(props.cat)
+  } else catsStore.DELETE_CAT(props.cat.id)
+}
 
 defineEmits(["close"])
 </script>
@@ -105,6 +105,12 @@ defineEmits(["close"])
 
   .adoptButton {
     width: 80%;
+  }
+}
+
+@media only screen and (max-width: 700px) {
+  .outerContainer {
+    width: 100%;
   }
 }
 </style>

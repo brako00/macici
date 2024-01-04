@@ -172,7 +172,11 @@ const checkForm = () => {
     errorTextColor.value === "" &&
     errorTextImage.value === ""
   ) {
-    catsStore.ADD_CAT(newCat.value)
+    if (props.action === "create") {
+      catsStore.ADD_CAT(newCat.value)
+    } else {
+      catsStore.UPDATE_CAT(newCat.value)
+    }
     props.modal()
     handleChange(newCat)
   }

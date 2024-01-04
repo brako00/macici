@@ -1,0 +1,21 @@
+import { computed, onMounted, onUnmounted, ref } from "vue"
+
+const myuseBreakpoints = (smallSize: number) => {
+  const windowWidth = ref(window.innerWidth)
+
+  const onWidthChange = () => (windowWidth.value = window.innerWidth)
+  onMounted(() => window.addEventListener("resize", onWidthChange))
+  onUnmounted(() => window.removeEventListener("resize", onWidthChange))
+
+  const type = computed(() => {
+    if (windowWidth.value < smallSize) {
+      return "sm"
+    } else {
+      return "lg"
+    }
+  })
+
+  return type
+}
+
+export default myuseBreakpoints

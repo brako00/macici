@@ -40,8 +40,16 @@ export const useUserStore = defineStore("user", () => {
     nameSearchTerm.value = term
   }
 
-  const UPDATE_ADOPTED = (cat: Cat) => {
-    cat.adopted = !cat.adopted
+  const CLEAR_FILTERS = () => {
+    ageChecked.value = true
+    ascendingChecked.value = true
+    sixChecked.value = false
+    tenChecked.value = false
+    blackChecked.value = false
+    selectedYoungerThan6.value = []
+    selectedYoungerThan10.value = []
+    selectedColorBlack.value = ""
+    nameSearchTerm.value = ""
   }
 
   return {
@@ -61,6 +69,7 @@ export const useUserStore = defineStore("user", () => {
     ADD_YOUNGER_THAN_10,
     ADD_BLACK_CATS,
     UPDATE_NAME_SEARCH_TERM,
-    UPDATE_ADOPTED
+
+    CLEAR_FILTERS
   }
 })
