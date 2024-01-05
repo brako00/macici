@@ -1,6 +1,6 @@
 <template>
-  <div class="filterContainer otherClass">
-    <div class="searchName">
+  <div class="filterContainer sticky-class">
+    <div>
       <h2>Search by name:</h2>
       <div class="inputContainer">
         <input
@@ -92,9 +92,10 @@ import ActionButton from "@/components/Shared/ActionButton.vue"
 import RadioButton from "@/components/Shared/RadioButton.vue"
 import CheckBox from "@/components/Shared/CheckBox.vue"
 
+import { computed, onMounted, onUnmounted, ref } from "vue"
+
 import { useUserStore } from "@/stores/user"
 import { useCatsStore } from "@/stores/cats"
-import { computed, onMounted, onUnmounted, ref } from "vue"
 
 const userStore = useUserStore()
 const catsStore = useCatsStore()
@@ -113,38 +114,35 @@ const changeStyle = () => {
   const element = document.querySelector(".filterContainer")
 
   element?.classList.toggle("hide-class")
-  element?.classList.toggle("new-class")
+  element?.classList.toggle("show-class")
 }
 
 const hideFilters = () => {
   const element = document.querySelector(".filterContainer")
-  element?.classList.remove("otherClass")
+  element?.classList.remove("sticky-class")
   element?.classList.add("hide-class")
 }
 
 const showFilters = () => {
   const element = document.querySelector(".filterContainer")
-  element?.classList.add("otherClass")
+  element?.classList.add("sticky-class")
   element?.classList.remove("hide-class")
 }
 
 //deciding on window type on window resize
 const useBreakpoints = () => {
   let windowWidth = ref(window.innerWidth)
+  console.log(windowWidth.value)
 
   const onWidthChange = () => (windowWidth.value = window.innerWidth)
   onMounted(() => window.addEventListener("resize", onWidthChange))
   onUnmounted(() => window.removeEventListener("resize", onWidthChange))
 
   const type = computed(() => {
-    console.log("window", windowWidth.value)
-
     if (windowWidth.value < 700) {
-      console.log(type.value)
       hideFilters()
       return "sm"
     } else {
-      console.log(type.value)
       showFilters()
       return "lg"
     }
@@ -159,35 +157,7 @@ const type = useBreakpoints()
 <style lang="scss" scoped>
 @import "@/assets/globalComponents.scss";
 
-.clearButton {
-  width: 100%;
-}
-.filterButton {
-  border: 0;
-}
-
-.filtersButton {
-  position: fixed;
-  padding: 5px;
-  right: 20px;
-  bottom: 20px;
-  width: max-content;
-
-  border: solid;
-  border-radius: 5%;
-
-  display: flex;
-  flex-direction: row-reverse;
-  justify-content: center;
-  align-items: center;
-
-  background-color: $buttonBgColor;
-  &:hover {
-    background-color: $buttonHoverBgColor;
-  }
-}
-
-.new-class {
+.show-class {
   position: fixed;
   top: 0;
   left: 0;
@@ -220,7 +190,7 @@ const type = useBreakpoints()
   display: none;
 }
 
-.otherClass {
+.sticky-class {
   width: 250px;
   position: sticky;
   top: 80px;
@@ -236,6 +206,10 @@ const type = useBreakpoints()
     display: flex;
     flex-direction: column;
   }
+
+  .clearButton {
+    width: 100%;
+  }
   .inputContainer {
     height: 35px;
     width: 250px;
@@ -248,23 +222,50 @@ const type = useBreakpoints()
     flex-direction: row;
     align-items: center;
     justify-content: center;
+
+    .textInput {
+      font-family: $primaryFontFamily;
+
+      width: 100%;
+      line-height: 80%;
+      font-size: large;
+
+      border: none;
+      outline: none;
+    }
+
+    .icon {
+      padding: 4px;
+    }
   }
   .inputContainer:focus-within {
     border: 4px solid $bgColor;
   }
-  .textInput {
-    font-family: $primaryFontFamily;
+}
 
-    width: 100%;
-    line-height: 80%;
-    font-size: large;
+.filtersButton {
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  width: max-content;
+  padding: 5px;
 
-    border: none;
-    outline: none;
+  border: solid;
+  border-radius: 5%;
+
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: center;
+  align-items: center;
+
+  background-color: $buttonBgColor;
+
+  &:hover {
+    background-color: $buttonHoverBgColor;
   }
 
-  .icon {
-    padding: 4px;
+  .filterButton {
+    border: 0;
   }
 }
 </style>

@@ -36,17 +36,19 @@ const buttonClass = computed(() => {
 
 button {
   font-family: $primaryFontFamily;
-
   font-size: x-large;
   font-weight: 600;
+
   border-radius: 2%;
   width: 80%;
+
   display: flex;
   justify-content: center;
   align-items: center;
 }
 .primary {
   background-color: $buttonBgColor;
+
   &:hover {
     background-color: $buttonHoverBgColor;
   }
@@ -54,6 +56,7 @@ button {
 
 .secondary {
   background-color: $bgColor;
+
   &:hover {
     background-color: $color3;
     color: aliceblue;

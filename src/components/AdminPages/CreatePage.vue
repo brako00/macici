@@ -1,6 +1,4 @@
 <template>
-  <!-- <edit-form action="create" :modal="openModal()"></edit-form> -->
-
   <div class="outerContainer">
     <div class="innerContainer">
       <h2>Create new cat</h2>
@@ -79,12 +77,11 @@
 <script lang="ts" setup>
 import ActionButton from "@/components/Shared/ActionButton.vue"
 import ConfirmationModal from "@/components/Shared/ConfirmationModal.vue"
-import { ref } from "vue"
 
+import { ref } from "vue"
 import { vOnClickOutside } from "@vueuse/components"
 
 import type { Cat } from "@/api/types"
-
 import { useCatsStore } from "@/stores/cats"
 
 const catsStore = useCatsStore()
@@ -116,6 +113,8 @@ const errorTextName = ref<string>("")
 const errorTextAge = ref<string>("")
 const errorTextColor = ref<string>("")
 const errorTextImage = ref<string>("")
+
+const showConfirmationModal = ref<boolean>(false)
 
 //checking input fields
 const checkFormName = () => {
@@ -161,12 +160,10 @@ const checkForm = () => {
     errorTextColor.value === "" &&
     errorTextImage.value === ""
   ) {
-    catsStore.ADD_CAT(newCat.value)
     openModal()
+    catsStore.ADD_CAT(newCat.value)
   }
 }
-
-const showConfirmationModal = ref<boolean>(false)
 
 const openModal = () => {
   showConfirmationModal.value = true
@@ -200,12 +197,11 @@ const closeModal = () => {
 
   background-color: $bgColor;
   border-radius: 2%;
-}
 
-h2 {
-  font-family: $secondaryFontFamily;
+  h2 {
+    font-family: $secondaryFontFamily;
+  }
 }
-
 form {
   display: flex;
   align-items: center;
@@ -214,34 +210,33 @@ form {
 
   width: 400px;
 }
-
 .inputContainer {
   display: flex;
   flex-direction: column;
 
   width: 100%;
   padding-top: 5px;
-}
 
-input,
-select {
-  line-height: 80%;
-  font-size: x-large;
-  font-family: $primaryFontFamily;
-}
+  input,
+  select {
+    line-height: 80%;
+    font-size: x-large;
+    font-family: $primaryFontFamily;
+  }
 
-label {
-  padding: 5px 0;
-  font-weight: 500;
-}
+  label {
+    padding: 5px 0;
+    font-weight: 500;
+  }
 
-p {
-  margin: 0;
-  padding-top: 5px;
-  font-size: large;
-  height: 26px;
+  p {
+    margin: 0;
+    padding-top: 5px;
+    font-size: large;
+    height: 26px;
 
-  color: rgb(182, 21, 21);
+    color: rgb(182, 21, 21);
+  }
 }
 
 .buttonContainer {

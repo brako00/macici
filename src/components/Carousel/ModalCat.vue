@@ -42,11 +42,27 @@
 <script lang="ts" setup>
 import AdoptModal from "@/components/Shared/AdoptModal.vue"
 import ActionButton from "@/components/Shared/ActionButton.vue"
+
 import { vOnClickOutside } from "@vueuse/components"
 import { ref } from "vue"
+
 import { useCatsStore } from "@/stores/cats"
 
+const props = defineProps({
+  catID: {
+    type: Number,
+    required: true
+  }
+})
+
+defineEmits(["close"])
+
 const showAdoptModal = ref<boolean>(false)
+
+const catsStore = useCatsStore()
+catsStore.GET_UNIQUE_CAT(props.catID)
+
+const cat = catsStore.uniqueCat
 
 const openAdoptModal = () => {
   showAdoptModal.value = true
@@ -55,19 +71,6 @@ const openAdoptModal = () => {
 const closeAdoptModal = () => {
   showAdoptModal.value = false
 }
-
-const props = defineProps({
-  catID: {
-    type: Number,
-    required: true
-  }
-})
-const catsStore = useCatsStore()
-catsStore.GET_UNIQUE_CAT(props.catID)
-
-const cat = catsStore.uniqueCat
-
-defineEmits(["close"])
 </script>
 
 <style lang="scss" scoped>
@@ -85,6 +88,12 @@ defineEmits(["close"])
   flex-direction: row;
 
   background-color: $bgColor;
+
+  .modalImage {
+    max-width: 100%;
+    min-width: 75%;
+    height: fit-content;
+  }
 
   .icon {
     height: 40px;
@@ -135,23 +144,18 @@ defineEmits(["close"])
       width: 100%;
     }
   }
-
-  .modalImage {
-    max-width: 100%;
-    min-width: 75%;
-    height: fit-content;
-  }
 }
 
 @media only screen and (max-width: 1200px) {
-  .catInfo {
-    width: 100%;
-  }
   .modalContainer {
     flex-direction: column;
     align-items: center;
     justify-content: center;
     width: 75%;
+
+    .catInfo {
+      width: 100%;
+    }
   }
 }
 

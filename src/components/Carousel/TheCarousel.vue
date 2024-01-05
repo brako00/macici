@@ -42,22 +42,25 @@
 
 <script lang="ts" setup>
 import ModalCat from "@/components/Carousel/ModalCat.vue"
-import { useCatsStore } from "@/stores/cats"
-import { ref, onMounted, onBeforeUnmount } from "vue"
-import type { Cat } from "@/api/types"
 
+import { ref, onMounted, onBeforeUnmount } from "vue"
 import { vOnClickOutside } from "@vueuse/components"
+
+import type { Cat } from "@/api/types"
+import { useCatsStore } from "@/stores/cats"
 
 const showModalCat = ref<boolean>(false)
 
 const catsStore = useCatsStore()
 
+const carouselCats = ref<Cat[]>([])
+
 const activeIndex = ref<number>(1)
 const activeIndexYoungestCats = ref<number>(0)
-const carouselCats = ref<Cat[]>([])
 
 const interval = ref<ReturnType<typeof setInterval>>()
 const lengthOfInterval = 3000
+
 const direction = ref<boolean>(true)
 
 onMounted(async () => {
@@ -96,7 +99,6 @@ const continueInterval = () => {
 
 //stopping auto changing images in carousel on hover
 const stoppingOnHover = (active: Element) => {
-  // console.log("active", active)
   active.addEventListener("mouseover", () => {
     pauseInterval()
   })
@@ -192,10 +194,10 @@ const closeModal = () => {
 
 .activeCat {
   display: block;
-}
 
-.activeCat:hover {
-  scale: 1.07;
+  &:hover {
+    scale: 1.07;
+  }
 }
 
 .subActiveCat {
@@ -213,10 +215,20 @@ const closeModal = () => {
   position: relative;
 
   img {
-    max-height: 500px;
-    min-height: 350px;
+    width: 750px;
+    height: 500px;
     object-fit: fill;
     border-radius: 2%;
+  }
+
+  .catName {
+    color: #f2f2f2;
+    font-family: $secondaryFontFamily;
+    font-size: 50px;
+    padding: 8px 12px;
+    position: absolute;
+    bottom: 8px;
+    text-shadow: 2px 2px black;
   }
 }
 
@@ -242,16 +254,6 @@ const closeModal = () => {
   right: calc(50% - 380px);
 }
 
-.catName {
-  color: #f2f2f2;
-  font-family: $secondaryFontFamily;
-  font-size: 50px;
-  padding: 8px 12px;
-  position: absolute;
-  bottom: 8px;
-  text-shadow: 2px 2px black;
-}
-
 @media only screen and (max-width: 800px) {
   .subActiveCat {
     display: none;
@@ -263,6 +265,7 @@ const closeModal = () => {
 
     img {
       width: 100%;
+      max-height: 350px;
     }
   }
 

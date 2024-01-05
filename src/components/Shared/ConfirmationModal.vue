@@ -43,20 +43,21 @@ defineEmits(["close"])
   position: fixed;
   top: 50%;
   left: 50%;
+  transform: translate(-50%, -50%);
+
   width: 700px;
   height: fit-content;
   padding: 20px;
+
   box-sizing: border-box;
 
-  z-index: 999;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  z-index: 999;
 
   background-color: $buttonHoverBgColor;
-  transition: opacity 0.3s ease;
-  transform: translate(-50%, -50%);
 
   font-size: large;
   font-family: $primaryFontFamily;
@@ -67,9 +68,11 @@ defineEmits(["close"])
   .icon {
     height: 40px;
     width: 40px;
+
     position: absolute;
     top: 0;
     right: 0;
+
     cursor: pointer;
   }
 

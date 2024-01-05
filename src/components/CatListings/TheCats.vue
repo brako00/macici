@@ -32,8 +32,9 @@ import CatFilters from "@/components/CatListings/CatFilters.vue"
 import CatCard from "@/components/CatListings/CatCard.vue"
 import ActionButton from "@/components/Shared/ActionButton.vue"
 
-import { useCatsStore } from "@/stores/cats"
 import { ref, computed, onMounted } from "vue"
+
+import { useCatsStore } from "@/stores/cats"
 
 //getting full array of cats from the store
 const catsStore = useCatsStore()
@@ -50,6 +51,7 @@ const isErrorMessage = computed(() => {
 
 //displaying first 20 cats in an array
 const count = ref(0)
+
 const displayedCats = computed(() => {
   const batchOfCats = 20
   const lastCatIndex = count.value * batchOfCats + batchOfCats
@@ -74,33 +76,38 @@ const nextBatch = computed(() => {
 section {
   display: flex;
   flex-direction: row;
-  width: 100%;
   flex-wrap: nowrap;
+
+  width: 100%;
 
   .contentContainer {
     flex: 1 1 auto;
-  }
-  .catContainer {
-    margin: 20px;
-    display: grid;
-    place-items: center;
-    row-gap: 30px;
-  }
-}
-.errorMessage {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
 
-  font-family: $primaryFontFamily;
-  font-size: large;
-}
-.buttonContainer {
-  height: 50px;
-  margin: 50px 0px;
-  display: flex;
-  justify-content: center;
+    .catContainer {
+      margin: 20px;
+      display: grid;
+      place-items: center;
+      row-gap: 30px;
+    }
+
+    .errorMessage {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+
+      font-family: $primaryFontFamily;
+      font-size: large;
+    }
+
+    .buttonContainer {
+      display: flex;
+      justify-content: center;
+
+      height: 50px;
+      margin: 50px 0px;
+    }
+  }
 }
 
 @media only screen and (min-width: 2500px) {

@@ -4,15 +4,15 @@ import { ref, computed } from "vue"
 import getCats from "@/api/getCats"
 import postCat from "@/api/postCat"
 import deleteCat from "@/api/deleteCat"
+import putCat from "@/api/putCat"
 
 import type { Cat } from "@/api/types"
 
 import { useUserStore } from "@/stores/user"
-import putCat from "@/api/putCat"
 
 export const useCatsStore = defineStore("cats", () => {
   const cats = ref(<Cat[]>[])
-  const YOUNGEST_CATS = ref(<Cat[]>[])
+  const recievedCats = ref(<Cat[]>[])
 
   const showAdopted = ref<boolean>(false)
 
@@ -26,12 +26,17 @@ export const useCatsStore = defineStore("cats", () => {
   })
 
   const FETCH_CATS = async () => {
-    const recievedCats = await getCats()
-    cats.value = recievedCats
-      .sort((a, b) => a.age - b.age)
-      .filter((cat) => NON_ADOPTED_CATS(cat))
-    YOUNGEST_CATS.value = cats.value.slice(0, 4)
+    recievedCats.value = await getCats()
+    cats.value = recievedCats.value.sort((a, b) => a.age - b.age)
   }
+
+  const YOUNGEST_CATS = computed(() => {
+    const MYcats = recievedCats.value.sort((a, b) => a.age - b.age)
+    return MYcats.filter((cat) => {
+      if (cat.adopted === false) return true
+      return false
+    }).slice(0, 4)
+  })
 
   const YOUNGER_THAN_6 = (cat: Cat): boolean => {
     const userStore = useUserStore()
@@ -138,22 +143,23 @@ export const useCatsStore = defineStore("cats", () => {
   }
 
   return {
-    UPDATE_ADOPTED,
-    UPDATE_SHOWADOPTED,
-    showAdopted,
     cats,
+    recievedCats,
+    showAdopted,
     uniqueCat,
     YOUNGEST_CATS,
-    ADD_CAT,
-    DELETE_CAT,
-    UPDATE_CAT,
+    SORTED_CATS,
+    FILTERED_CATS,
     FETCH_CATS,
     YOUNGER_THAN_6,
     YOUNGER_THAN_10,
     BLACK_CATS,
     INCLUDE_BY_NAME,
-    SORTED_CATS,
-    FILTERED_CATS,
-    GET_UNIQUE_CAT
+    ADD_CAT,
+    DELETE_CAT,
+    UPDATE_CAT,
+    GET_UNIQUE_CAT,
+    UPDATE_ADOPTED,
+    UPDATE_SHOWADOPTED
   }
 })

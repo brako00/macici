@@ -112,6 +112,7 @@ const checkFormPassword = () => {
     img {
       height: 200px;
       width: 200px;
+
       border-radius: 100%;
       object-fit: contain;
     }
@@ -127,10 +128,11 @@ const checkFormPassword = () => {
         width: 300px;
 
         h2 {
-          font-size: xx-large;
           display: flex;
           justify-content: center;
+
           margin-bottom: 0;
+          font-size: xx-large;
         }
 
         h3 {
@@ -142,14 +144,16 @@ const checkFormPassword = () => {
       }
 
       .errorContainer {
-        font-size: medium;
-        font-weight: 600;
         display: flex;
         align-items: center;
         flex-direction: column;
         flex-wrap: wrap;
+
         width: 100%;
         height: 70px;
+
+        font-size: medium;
+        font-weight: 600;
 
         p {
           margin-bottom: 0;
@@ -164,14 +168,15 @@ const checkFormPassword = () => {
         input {
           line-height: 80%;
           font-size: x-large;
-          width: 98%;
-
           font-family: $primaryFontFamily;
+
+          width: 98%;
         }
 
         .signinbutton {
           width: 100%;
           height: 100%;
+
           margin-bottom: 20px;
           font-weight: 600;
           background-color: $buttonBgColor;
@@ -189,9 +194,9 @@ const checkFormPassword = () => {
   .outerContainer {
     width: 100%;
     margin: 50px 0px 0px 0px;
-  }
-  .innerContainer {
-    width: 100%;
+    .innerContainer {
+      width: 100%;
+    }
   }
 }
 </style>

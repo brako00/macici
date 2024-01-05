@@ -2,7 +2,7 @@
   <header>
     <div class="container">
       <router-link :to="{ name: 'home' }" class="nameContainer">
-        <!-- <img src="../../public/paw.png" alt="Logo image" /> -->
+        <img src="../../kitty.png" alt="Logo image" class="icon" />
         Meow Matchmakers
       </router-link>
 
@@ -45,8 +45,8 @@
 </template>
 
 <script lang="ts" setup>
+import myuseBreakpoints from "@/composables/myuseBreakpoints"
 import { useUserStore } from "@/stores/user"
-import { ref, onMounted, onUnmounted, computed } from "vue"
 
 const userStore = useUserStore()
 
@@ -56,121 +56,44 @@ const showDropdown = () => {
   element?.classList.toggle("hide-class")
 }
 
-//deciding on window size on window resize
-// const useBreakpoints = () => {
-//   const windowWidth = ref(window.innerWidth)
-
-//   const onWidthChange = () => (windowWidth.value = window.innerWidth)
-//   onMounted(() => window.addEventListener("resize", onWidthChange))
-//   onUnmounted(() => window.removeEventListener("resize", onWidthChange))
-
-//   const type = computed(() => {
-//     if (windowWidth.value < 700) {
-//       return "sm"
-//     } else {
-//       return "lg"
-//     }
-//   })
-
-//   return type
-// }
-
-import myuseBreakpoints from "@/composables/myuseBreakpoints"
 const type = myuseBreakpoints(700)
 </script>
 
 <style lang="scss" scoped>
 @import "@/assets/globalComponents.scss";
 
-.elseDiv {
-  height: 100%;
-  width: 100%;
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.adminSignIn {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-
-  height: 100%;
-  width: 100%;
-}
-
-button {
-  background-color: $bgColor;
-  border: 0;
-}
-
-.dropdown {
-  position: relative;
-  display: inline-block;
-}
-
 .hide-class {
   display: none;
 }
 
-.dropdownContent {
-  position: absolute;
-  right: 0;
-  background-color: $bgColor;
-  min-width: 160px;
-  z-index: 1;
-
-  border-radius: 10%;
-}
-
-.dropdownLink {
-  font-family: $primaryFontFamily;
-  font-size: x-large;
-  text-decoration: none;
-  color: #000;
-
-  padding: 10px;
-  margin: 0;
-
-  display: flex;
-  flex-wrap: wrap;
-
-  border-bottom: solid #000 2px;
-  border-radius: 10%;
-
-  &:hover {
-    background-color: $buttonBgColor;
-    font-weight: 500;
-  }
-}
-
 header {
   width: 100%;
-
   height: 65px;
-  //115
 
   .container {
     position: fixed;
     top: 0px;
     left: 0px;
+
     width: 100%;
     height: max-content;
 
     background-color: $bgColor;
+
     display: flex;
     justify-content: space-between;
     flex-wrap: nowrap;
+
     z-index: 1;
     .nameContainer {
-      padding: 10px;
-      margin-left: 15px;
-      font-size: 200%;
-      font-family: $secondaryFontFamily;
       display: flex;
       align-items: center;
+
+      padding: 10px;
+      margin-left: 15px;
+
+      font-size: 200%;
+      font-family: $secondaryFontFamily;
       text-decoration: none;
       color: #000;
     }
@@ -179,43 +102,107 @@ header {
 
       display: flex;
       align-items: center;
-      img,
-      .icon {
-        height: 50px;
-        width: 50px;
-        object-fit: contain;
-        border-radius: 20%;
+
+      .elseDiv {
+        height: 100%;
+        width: 100%;
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        .dropdown {
+          position: relative;
+          display: inline-block;
+
+          .dropdownContent {
+            position: absolute;
+            right: 0;
+            min-width: 160px;
+            background-color: $bgColor;
+
+            border-radius: 10%;
+
+            z-index: 1;
+
+            .dropdownLink {
+              font-family: $primaryFontFamily;
+              font-size: x-large;
+              text-decoration: none;
+              color: #000;
+
+              padding: 10px;
+              margin: 0;
+
+              display: flex;
+              flex-wrap: wrap;
+
+              border-bottom: solid #000 2px;
+              border-radius: 10%;
+
+              &:hover {
+                background-color: $buttonBgColor;
+                font-weight: 500;
+              }
+            }
+          }
+        }
+
+        .adminSignIn {
+          display: flex;
+          flex-direction: row;
+          justify-content: center;
+          align-items: center;
+
+          height: 100%;
+          width: 100%;
+
+          .signOut {
+            color: #000;
+            font-size: x-large;
+            font-family: $primaryFontFamily;
+
+            padding: 0 20px;
+            height: 100%;
+            width: 100%;
+
+            display: flex;
+            align-items: center;
+
+            cursor: pointer;
+
+            &:hover {
+              background-color: $buttonBgColor;
+              font-weight: 600;
+            }
+          }
+        }
       }
     }
   }
 }
 
-.signOut {
-  color: #000;
-  font-size: x-large;
-
-  font-family: $primaryFontFamily;
-  // margin-right: 20px;
-  padding: 0 20px;
-  height: 100%;
-  width: 100%;
-
-  display: flex;
-  align-items: center;
-
-  cursor: pointer;
+button {
+  background-color: $bgColor;
+  border: 0;
 }
 
-.signOut:hover {
-  background-color: $buttonBgColor;
-  font-weight: 600;
+img {
+  height: 50px;
+  width: 50px;
+  object-fit: contain;
+  border-radius: 20%;
+}
+
+.icon {
+  padding-right: 5px;
 }
 
 a {
   margin-right: 20px;
 }
 
-@media only screen and (max-width: 438px) {
+@media only screen and (max-width: 481px) {
   header {
     height: 115px;
   }

@@ -81,13 +81,13 @@
 <script lang="ts" setup>
 import ActionButton from "@/components/Shared/ActionButton.vue"
 import ConfirmationModal from "@/components/Shared/ConfirmationModal.vue"
-import { computed, ref } from "vue"
 
 import { useCatsStore } from "@/stores/cats"
-import { useRoute } from "vue-router"
-
-import { vOnClickOutside } from "@vueuse/components"
 import type { Cat } from "@/api/types"
+
+import { computed, ref } from "vue"
+import { useRoute } from "vue-router"
+import { vOnClickOutside } from "@vueuse/components"
 
 const catsStore = useCatsStore()
 
@@ -102,6 +102,30 @@ const errorTextName = ref<string>("")
 const errorTextAge = ref<string>("")
 const errorTextColor = ref<string>("")
 const errorTextImage = ref<string>("")
+
+const colors = [
+  "Black",
+  "White",
+  "Gray",
+  "Yellow",
+  "Beige",
+  "Tabby",
+  "Calico",
+  "Point",
+  "Tortoiseshell"
+]
+const newCat = ref<Cat>({
+  id: 0,
+  adopted: false,
+  name: "",
+  color: "",
+  age: 1,
+  image: ""
+})
+
+newCat.value = catsStore.uniqueCat
+
+const showConfirmationModal = ref<boolean>(false)
 
 const checkFormName = () => {
   if (newCat.value.name === "") {
@@ -143,31 +167,6 @@ const checkForm = () => {
   }
 }
 
-const newCat = ref<Cat>({
-  id: 0,
-  adopted: false,
-  name: "",
-  color: "",
-  age: 1,
-  image: ""
-})
-
-newCat.value = catsStore.uniqueCat
-
-const colors = [
-  "Black",
-  "White",
-  "Gray",
-  "Yellow",
-  "Beige",
-  "Tabby",
-  "Calico",
-  "Point",
-  "Tortoiseshell"
-]
-
-const showConfirmationModal = ref<boolean>(false)
-
 const openModal = () => {
   showConfirmationModal.value = true
 }
@@ -190,15 +189,54 @@ const closeModal = () => {
   font-size: x-large;
 }
 
-// .formLine {
-//   width: 100%;
-// }
+.innerContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  width: 50%;
+
+  background-color: $bgColor;
+  border-radius: 2%;
+
+  h2 {
+    font-family: $secondaryFontFamily;
+  }
+}
+
+form {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  width: 400px;
+}
 
 .inputContainer {
   display: flex;
   flex-direction: column;
   width: 100%;
   padding: 10px 0;
+
+  label {
+    padding: 5px 0;
+    font-weight: 500;
+  }
+
+  input,
+  select {
+    line-height: 80%;
+    font-size: x-large;
+  }
+
+  p {
+    margin: 0;
+    padding-top: 5px;
+    font-size: large;
+    height: 26px;
+
+    color: rgb(182, 21, 21);
+  }
 }
 
 #checkboxContainer {
@@ -236,46 +274,6 @@ const closeModal = () => {
     transform: scale(1);
   }
 }
-
-label {
-  padding: 5px 0;
-  font-weight: 500;
-}
-
-.innerContainer {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  width: 50%;
-
-  background-color: $bgColor;
-  border-radius: 2%;
-}
-
-h2 {
-  font-family: $secondaryFontFamily;
-}
-
-form {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  width: 400px;
-}
-
-input,
-select {
-  line-height: 80%;
-  font-size: x-large;
-}
-
-button {
-  width: 100%;
-  height: 40px;
-}
-
 .buttonContainer {
   margin-top: 40px;
   margin-bottom: 30px;
@@ -283,13 +281,9 @@ button {
   width: 100%;
 }
 
-p {
-  margin: 0;
-  padding-top: 5px;
-  font-size: large;
-  height: 26px;
-
-  color: rgb(182, 21, 21);
+button {
+  width: 100%;
+  height: 40px;
 }
 
 @media only screen and (max-width: 900px) {
