@@ -1,7 +1,5 @@
 import { createPinia, setActivePinia } from "pinia"
 
-import { createCat } from "../../utils/createCat"
-
 import { useUserStore } from "@/stores/user"
 
 describe("state", () => {
@@ -102,12 +100,28 @@ describe("actions", () => {
     })
   })
 
-  describe("UPDATE_ADOPTED", () => {
-    it("updates adopt flag of cat", () => {
-      const cat = createCat({ adopted: false })
+  describe("CLEAR_FILTERS", () => {
+    it("returns all filters to original state", () => {
       const store = useUserStore()
-      store.UPDATE_ADOPTED(cat)
-      expect(cat.adopted).toBe(true)
+      store.descendingChecked = true
+      store.tenChecked = true
+
+      store.selectedColorBlack = "Black"
+      store.nameSearchTerm = "Ki"
+
+      store.CLEAR_FILTERS()
+
+      expect(store.ageChecked).toBe(true)
+      expect(store.ascendingChecked).toBe(true)
+      expect(store.sixChecked).toBe(false)
+      expect(store.tenChecked).toBe(false)
+      expect(store.blackChecked).toBe(false)
+
+      expect(store.selectedYoungerThan6).toEqual([])
+      expect(store.selectedYoungerThan10).toEqual([])
+
+      expect(store.selectedColorBlack).toEqual("")
+      expect(store.nameSearchTerm).toEqual("")
     })
   })
 })

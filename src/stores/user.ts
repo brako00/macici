@@ -69,7 +69,6 @@ export const useUserStore = defineStore("user", () => {
     ADD_YOUNGER_THAN_10,
     ADD_BLACK_CATS,
     UPDATE_NAME_SEARCH_TERM,
-
     CLEAR_FILTERS
   }
 })

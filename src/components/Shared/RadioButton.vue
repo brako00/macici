@@ -7,7 +7,7 @@
       class="radioButton"
       :name="props.name"
     />
-    <label for="props.value"> {{ props.value }} </label>
+    <label :for="props.value"> {{ props.value }} </label>
   </div>
 </template>
 

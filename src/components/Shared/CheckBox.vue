@@ -8,7 +8,7 @@
         class="checkbox"
         :checked="props.isChecked"
       />
-      <label for="props.value"> {{ props.value }} </label>
+      <label :for="props.value"> {{ props.value }} </label>
     </div>
   </div>
 </template>

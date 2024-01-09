@@ -4,7 +4,6 @@ import userEvent from "@testing-library/user-event"
 import { createTestingPinia } from "@pinia/testing"
 
 import { useUserStore } from "@/stores/user"
-import { useCatsStore } from "@/stores/cats"
 
 import SignIn from "@/components/AdminPages/SignIn.vue"
 

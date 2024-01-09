@@ -8,13 +8,15 @@ import { createCat } from "../../utils/createCat"
 
 vi.mock("axios")
 const axiosGetMock = axios.get as Mock
-const axiosPostMock = axios.post as Mock
-const axiosDeleteMock = axios.delete as Mock
-const axiosPutMock = axios.put as Mock
 
 describe("state", () => {
   beforeEach(() => {
     setActivePinia(createPinia())
+  })
+
+  it("stores array of recieved cats", () => {
+    const store = useCatsStore()
+    expect(store.recievedCats).toEqual([])
   })
 
   it("stores array of all cats", () => {
@@ -22,9 +24,22 @@ describe("state", () => {
     expect(store.cats).toEqual([])
   })
 
-  it("stores array of 4 youngest cats", () => {
+  it("keeps track whether to show adopted cats", () => {
     const store = useCatsStore()
-    expect(store.YOUNGEST_CATS).toEqual([])
+    expect(store.showAdopted).toBe(false)
+  })
+
+  it("stores empty cat object", () => {
+    const store = useCatsStore()
+    const newCat = createCat({
+      id: 0,
+      adopted: false,
+      name: "",
+      color: "",
+      age: 1,
+      image: ""
+    })
+    expect(store.uniqueCat).toEqual(newCat)
   })
 })
 
@@ -41,6 +56,41 @@ describe("actions", () => {
       const store = useCatsStore()
       await store.FETCH_CATS()
       expect(store.cats).toEqual([cat1, cat2])
+    })
+  })
+
+  describe("UPDATE_SHOWADOPTED", () => {
+    it("changes value of show adopted flag", () => {
+      const store = useCatsStore()
+      store.UPDATE_SHOWADOPTED()
+      expect(store.showAdopted).toBe(true)
+    })
+  })
+
+  describe("GET_UNIQUE_CAT", () => {
+    it("finds cat based on unique id", () => {
+      const store = useCatsStore()
+      const newCat = createCat({
+        id: 11,
+        name: "Medo"
+      })
+      store.cats.push(newCat)
+
+      store.GET_UNIQUE_CAT(11)
+      expect(store.uniqueCat.name).toEqual("Medo")
+    })
+  })
+
+  describe("UPDATE_ADOPTED", () => {
+    it("updates adopt flag of the selected cat", () => {
+      const store = useCatsStore()
+      const newCat = createCat({
+        adopted: false
+      })
+      expect(newCat.adopted).toBe(false)
+
+      store.UPDATE_ADOPTED(newCat)
+      expect(newCat.adopted).toBe(true)
     })
   })
 })
