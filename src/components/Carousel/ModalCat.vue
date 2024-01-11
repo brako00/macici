@@ -87,7 +87,7 @@ const closeAdoptModal = () => {
   display: flex;
   flex-direction: row;
 
-  background-color: $bgColor;
+  background-color: $primaryColor;
 
   .modalImage {
     max-width: 100%;
@@ -102,7 +102,7 @@ const closeAdoptModal = () => {
     top: 0;
     right: 0;
     cursor: pointer;
-    background-color: $bgColor;
+    background-color: $primaryColor;
   }
 
   .catInfo {
@@ -118,7 +118,6 @@ const closeAdoptModal = () => {
 
     .catName {
       font-family: $secondaryFontFamily;
-      font-size: 55px;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -130,12 +129,10 @@ const closeAdoptModal = () => {
       flex-direction: column;
 
       font-family: $primaryFontFamily;
-      font-size: 26px;
 
       span {
         display: flex;
         flex-direction: row;
-        flex-wrap: wrap;
         justify-content: space-between;
         padding-right: 15px;
       }
@@ -143,6 +140,15 @@ const closeAdoptModal = () => {
     .adoptButton {
       width: 100%;
     }
+  }
+}
+
+@media only screen and (min-width: 1025px) {
+  .catName {
+    font-size: 55px;
+  }
+  .extraCatInfo {
+    font-size: 26px;
   }
 }
 
@@ -159,10 +165,42 @@ const closeAdoptModal = () => {
   }
 }
 
+@media only screen and (max-width: 1200px) and (max-height: 950px) {
+  .modalContainer {
+    flex-direction: row;
+    width: 100%;
+    align-items: normal;
+  }
+}
+
+@media only screen and (max-width: 1024px) {
+  .modalImage {
+    width: 500px;
+  }
+  .catName {
+    font-size: 35px;
+  }
+  .extraCatInfo {
+    font-size: 20px;
+  }
+}
+@media only screen and (orientation: landscape) {
+  .modalContainer {
+    flex-direction: row;
+    width: 100%;
+    align-items: normal;
+  }
+}
+
 @media only screen and (max-width: 600px) {
   .modalContainer {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
     height: max-content;
     width: 100%;
+    max-width: fit-content;
   }
 }
 </style>

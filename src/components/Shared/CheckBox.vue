@@ -68,7 +68,7 @@ div {
     height: 1.15em;
     background-color: white;
 
-    border: 0.15em solid $bgColor;
+    border: 0.15em solid $primaryColor;
     border-radius: 20%;
   }
 
@@ -93,6 +93,6 @@ div {
 }
 
 div:hover > input {
-  background-color: $bgColor;
+  background-color: $primaryColor;
 }
 </style>

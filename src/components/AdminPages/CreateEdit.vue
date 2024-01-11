@@ -1,7 +1,7 @@
 <template>
   <div class="outerContainer">
     <div class="innerContainer">
-      <h2>Create new cat</h2>
+      <h2>{{ createOrEditUpperCase }} cat</h2>
 
       <form autocomplete="on">
         <div class="inputContainer">
@@ -11,11 +11,10 @@
             v-model="newCat.name"
             class="formLine"
             type="text"
-            style="text-transform: capitalize"
             @focusout="checkFormName"
           />
 
-          <p class="errorName visibilityClass">{{ errorTextName }}</p>
+          <p>{{ errorTextName }}</p>
         </div>
 
         <div class="inputContainer">
@@ -28,7 +27,6 @@
             max="12"
             @focusout="checkFormAge"
           />
-
           <p>{{ errorTextAge }}</p>
         </div>
 
@@ -38,7 +36,7 @@
             id="color"
             v-model="newCat.color"
             class="formLine"
-            @focusout="checkFormColor"
+            @blur="checkFormColor"
           >
             <option v-for="color in colors" :key="color">{{ color }}</option>
           </select>
@@ -52,24 +50,38 @@
             id="image"
             v-model="newCat.image"
             class="formLine"
-            type="text"
-            @focusout="checkFormImage"
+            type="url"
+            @blur="checkFormImage"
           />
 
           <p>{{ errorTextImage }}</p>
         </div>
 
+        <div
+          v-if="createOrEdit === 'edit'"
+          id="checkboxContainer"
+          class="inputContainer"
+        >
+          <label for="adopted">Adopted:</label>
+          <input id="adopted" v-model="newCat.adopted" type="checkbox" />
+        </div>
+
         <div class="buttonContainer">
-          <action-button type="primary" text="Create cat" @click="checkForm" />
+          <action-button
+            type="primary"
+            :text="createOrEditUpperCase + ' cat'"
+            @click="checkForm"
+          />
         </div>
       </form>
     </div>
   </div>
+
   <confirmation-modal
     v-if="showConfirmationModal"
     v-on-click-outside="closeModal"
     :name="newCat.name"
-    action="created"
+    :action="modalAction"
     @close="closeModal"
   />
 </template>
@@ -78,11 +90,12 @@
 import ActionButton from "@/components/Shared/ActionButton.vue"
 import ConfirmationModal from "@/components/Shared/ConfirmationModal.vue"
 
-import { ref } from "vue"
-import { vOnClickOutside } from "@vueuse/components"
-
-import type { Cat } from "@/api/types"
 import { useCatsStore } from "@/stores/cats"
+import type { Cat } from "@/api/types"
+
+import { computed, ref } from "vue"
+import { useRoute } from "vue-router"
+import { vOnClickOutside } from "@vueuse/components"
 
 const catsStore = useCatsStore()
 
@@ -94,6 +107,29 @@ const newCat = ref<Cat>({
   age: 1,
   image: ""
 })
+
+const numbers = /\d/
+
+const createOrEdit = ref("create")
+const modalAction = ref("created")
+
+const route = useRoute()
+const editCatId = computed(() => +route.params.id)
+
+if (editCatId.value) {
+  catsStore.GET_UNIQUE_CAT(editCatId.value)
+  newCat.value = catsStore.uniqueCat
+  createOrEdit.value = "edit"
+  modalAction.value = "edited"
+}
+
+const createOrEditUpperCase =
+  createOrEdit.value.charAt(0).toUpperCase() + createOrEdit.value.slice(1)
+
+const errorTextName = ref<string>("")
+const errorTextAge = ref<string>("")
+const errorTextColor = ref<string>("")
+const errorTextImage = ref<string>("")
 
 const colors = [
   "Black",
@@ -107,16 +143,8 @@ const colors = [
   "Tortoiseshell"
 ]
 
-const numbers = /\d/
-
-const errorTextName = ref<string>("")
-const errorTextAge = ref<string>("")
-const errorTextColor = ref<string>("")
-const errorTextImage = ref<string>("")
-
 const showConfirmationModal = ref<boolean>(false)
 
-//checking input fields
 const checkFormName = () => {
   if (newCat.value.name === "") {
     errorTextName.value = "Name is required"
@@ -142,17 +170,9 @@ const checkFormColor = () => {
 const checkFormImage = () => {
   if (newCat.value.image === "") {
     errorTextImage.value = "Image is required"
-  } else if (
-    // eslint-disable-next-line no-useless-escape
-    !/^(http(s):\/\/.)[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)$/g.test(
-      newCat.value.image
-    )
-  ) {
-    errorTextImage.value = "Image should be a valid URL"
-  } else errorTextImage.value = ""
+  } else errorTextColor.value = ""
 }
 
-//if all input fields are in correct form create cat
 const checkForm = () => {
   if (
     errorTextName.value === "" &&
@@ -161,7 +181,9 @@ const checkForm = () => {
     errorTextImage.value === ""
   ) {
     openModal()
-    catsStore.ADD_CAT(newCat.value)
+
+    if (createOrEdit.value === "edit") catsStore.UPDATE_CAT(newCat.value)
+    else catsStore.ADD_CAT(newCat.value)
   }
 }
 
@@ -183,50 +205,48 @@ const closeModal = () => {
   justify-content: center;
 
   margin-top: 30px;
-
   font-family: $primaryFontFamily;
   font-size: x-large;
 }
+
 .innerContainer {
   display: flex;
   align-items: center;
   justify-content: center;
   flex-direction: column;
-
   width: 50%;
 
-  background-color: $bgColor;
+  background-color: $primaryColor;
   border-radius: 2%;
 
   h2 {
     font-family: $secondaryFontFamily;
   }
 }
+
 form {
   display: flex;
   align-items: center;
   justify-content: center;
   flex-direction: column;
-
   width: 400px;
 }
+
 .inputContainer {
   display: flex;
   flex-direction: column;
-
   width: 100%;
-  padding-top: 5px;
+  padding: 10px 0;
+
+  label {
+    padding: 5px 0;
+    font-weight: 500;
+  }
 
   input,
   select {
     line-height: 80%;
     font-size: x-large;
-    font-family: $primaryFontFamily;
-  }
-
-  label {
-    padding: 5px 0;
-    font-weight: 500;
   }
 
   p {
@@ -239,10 +259,44 @@ form {
   }
 }
 
+#checkboxContainer {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 10px;
+
+  input[type="checkbox"] {
+    appearance: none;
+    background-color: white;
+    width: 1.15em;
+    height: 1.15em;
+    border: 0.15em solid $primaryColor;
+    border-radius: 20%;
+    display: grid;
+    place-content: center;
+
+    &:hover {
+      background-color: $secondaryColor;
+    }
+  }
+
+  input[type="checkbox"]::before {
+    content: "";
+    width: 0.7em;
+    height: 0.75em;
+    border-radius: 20%;
+    transform: scale(0);
+    transition: 100ms transform ease-in-out;
+    box-shadow: inset 1em 1em $buttonColor;
+  }
+
+  input[type="checkbox"]:checked::before {
+    transform: scale(1);
+  }
+}
 .buttonContainer {
   margin-top: 40px;
   margin-bottom: 30px;
-
   padding: 10px 0;
   width: 100%;
 }

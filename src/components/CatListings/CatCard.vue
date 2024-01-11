@@ -4,7 +4,10 @@
       <img :src="cat.image" alt="Image of the cat" />
 
       <div class="catInfo">
-        <h2 class="catName">{{ props.cat.name }}</h2>
+        <h2 v-if="$props.cat.name.length < 16" class="catName">
+          {{ props.cat.name }}
+        </h2>
+        <h2 v-else class="catName">{{ props.cat.name.slice(0, 15) }}...</h2>
         <div class="textContainer">
           <span>
             <h4>Fur color:</h4>
@@ -110,7 +113,7 @@ const closeDeleteModal = () => {
   max-width: 400px;
 }
 .catCard {
-  background-color: $bgColor;
+  background-color: $primaryColor;
   border: 2px;
   border: solid;
   border-radius: 2%;

@@ -1,11 +1,11 @@
 <template>
   <sign-in v-if="!userStore.adminLoggedIn" />
-  <create-page v-else />
+  <create-edit v-else />
 </template>
 
 <script lang="ts" setup>
 import SignIn from "@/components/AdminPages/SignIn.vue"
-import CreatePage from "@/components/AdminPages/CreatePage.vue"
+import CreateEdit from "@/components/AdminPages/CreateEdit.vue"
 
 import { useUserStore } from "@/stores/user"
 

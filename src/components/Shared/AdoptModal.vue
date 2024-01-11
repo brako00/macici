@@ -80,7 +80,7 @@ defineEmits(["close"])
   justify-content: center;
   z-index: 999;
 
-  background-color: $buttonHoverBgColor;
+  background-color: $ternaryColor;
 
   font-size: large;
   font-family: $primaryFontFamily;

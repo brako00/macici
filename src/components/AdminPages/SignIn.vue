@@ -102,7 +102,7 @@ const checkFormPassword = () => {
 
     font-family: $primaryFontFamily;
 
-    background-color: $bgColor;
+    background-color: $primaryColor;
 
     border-radius: 2%;
 
@@ -179,10 +179,10 @@ const checkFormPassword = () => {
 
           margin-bottom: 20px;
           font-weight: 600;
-          background-color: $buttonBgColor;
+          background-color: $secondaryColor;
 
           &:hover {
-            background-color: $buttonHoverBgColor;
+            background-color: $ternaryColor;
           }
         }
       }

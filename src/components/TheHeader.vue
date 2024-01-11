@@ -78,7 +78,7 @@ header {
     width: 100%;
     height: max-content;
 
-    background-color: $bgColor;
+    background-color: $primaryColor;
 
     display: flex;
     justify-content: space-between;
@@ -119,7 +119,7 @@ header {
             position: absolute;
             right: 0;
             min-width: 160px;
-            background-color: $bgColor;
+            background-color: $primaryColor;
 
             border-radius: 10%;
 
@@ -141,7 +141,7 @@ header {
               border-radius: 10%;
 
               &:hover {
-                background-color: $buttonBgColor;
+                background-color: $secondaryColor;
                 font-weight: 500;
               }
             }
@@ -172,7 +172,7 @@ header {
             cursor: pointer;
 
             &:hover {
-              background-color: $buttonBgColor;
+              background-color: $secondaryColor;
               font-weight: 600;
             }
           }
@@ -183,7 +183,7 @@ header {
 }
 
 button {
-  background-color: $bgColor;
+  background-color: $primaryColor;
   border: 0;
 }
 

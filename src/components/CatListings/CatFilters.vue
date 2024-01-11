@@ -239,7 +239,7 @@ const type = useBreakpoints()
     }
   }
   .inputContainer:focus-within {
-    border: 4px solid $bgColor;
+    border: 4px solid $primaryColor;
   }
 }
 
@@ -258,10 +258,10 @@ const type = useBreakpoints()
   justify-content: center;
   align-items: center;
 
-  background-color: $buttonBgColor;
+  background-color: $secondaryColor;
 
   &:hover {
-    background-color: $buttonHoverBgColor;
+    background-color: $ternaryColor;
   }
 
   .filterButton {

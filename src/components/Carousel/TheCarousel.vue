@@ -5,8 +5,8 @@
         <div
           class="carouselCat"
           :class="{
-            activeCat: carouselCats.indexOf(cat) === activeIndex,
-            subActiveCat: carouselCats.indexOf(cat) !== activeIndex
+            activeCat: isCatActive(cat),
+            subActiveCat: !isCatActive(cat)
           }"
         >
           <img :src="cat.image" />
@@ -21,12 +21,16 @@
           :icon="['fas', 'chevron-circle-left']"
           class="iconLeft"
           @click="(direction = false), goingLeft()"
+          @mouseover="pauseInterval()"
+          @mouseout="continueInterval()"
         />
 
         <font-awesome-icon
           :icon="['fas', 'chevron-circle-right']"
           class="iconRight"
           @click="(direction = true), goingRight()"
+          @mouseover="pauseInterval()"
+          @mouseout="continueInterval()"
         />
       </div>
 
@@ -63,9 +67,7 @@ const lengthOfInterval = 3000
 
 const direction = ref<boolean>(true)
 
-onMounted(async () => {
-  await catsStore.FETCH_CATS()
-
+const initializeCarousel = () => {
   //creates array of 3 elements with active cat in the middle
   carouselCats.value.push(
     catsStore.YOUNGEST_CATS[0],
@@ -83,11 +85,21 @@ onMounted(async () => {
         openModal()
       })
   }, 500)
+}
+
+onMounted(async () => {
+  await catsStore.FETCH_CATS()
+
+  initializeCarousel()
 })
 
 onBeforeUnmount(() => {
   pauseInterval()
 })
+
+const isCatActive = (cat: Cat) => {
+  return carouselCats.value.indexOf(cat) === activeIndex.value
+}
 
 const pauseInterval = () => {
   clearInterval(interval.value)
@@ -241,7 +253,7 @@ const closeModal = () => {
   border-radius: 0 3px 3px 0;
   user-select: none;
 
-  color: $bgColor;
+  color: $primaryColor;
   position: absolute;
   bottom: 45%;
 }

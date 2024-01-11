@@ -47,18 +47,18 @@ button {
   align-items: center;
 }
 .primary {
-  background-color: $buttonBgColor;
+  background-color: $secondaryColor;
 
   &:hover {
-    background-color: $buttonHoverBgColor;
+    background-color: $ternaryColor;
   }
 }
 
 .secondary {
-  background-color: $bgColor;
+  background-color: $primaryColor;
 
   &:hover {
-    background-color: $color3;
+    background-color: $accentColor;
     color: aliceblue;
   }
 }
