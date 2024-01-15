@@ -1,12 +1,12 @@
 <template>
   <section>
     <div class="allCats">
-      <div v-for="cat in carouselCats" :key="cat.id">
+      <div v-for="cat in newCarouselCats" :key="cat.id">
         <div
           class="carouselCat"
           :class="{
             activeCat: isCatActive(cat),
-            subActiveCat: !isCatActive(cat)
+            subActiveCat: isCatSubactive(cat)
           }"
         >
           <img :src="cat.image" />
@@ -37,7 +37,7 @@
       <modal-cat
         v-if="showModalCat"
         v-on-click-outside="closeModal"
-        :cat-i-d="carouselCats[1].id"
+        :cat-i-d="newCarouselCats[activeIndex].id"
         @close="closeModal"
       />
     </div>
@@ -47,7 +47,7 @@
 <script lang="ts" setup>
 import ModalCat from "@/components/Carousel/ModalCat.vue"
 
-import { ref, onMounted, onBeforeUnmount } from "vue"
+import { ref, onMounted, onBeforeUnmount, computed } from "vue"
 import { vOnClickOutside } from "@vueuse/components"
 
 import type { Cat } from "@/api/types"
@@ -57,24 +57,16 @@ const showModalCat = ref<boolean>(false)
 
 const catsStore = useCatsStore()
 
-const carouselCats = ref<Cat[]>([])
-
 const activeIndex = ref<number>(1)
-const activeIndexYoungestCats = ref<number>(0)
 
 const interval = ref<ReturnType<typeof setInterval>>()
 const lengthOfInterval = 3000
 
 const direction = ref<boolean>(true)
 
-const initializeCarousel = () => {
-  //creates array of 3 elements with active cat in the middle
-  carouselCats.value.push(
-    catsStore.YOUNGEST_CATS[0],
-    catsStore.YOUNGEST_CATS[1]
-  )
-  carouselCats.value.unshift(catsStore.YOUNGEST_CATS[3])
+const newCarouselCats = computed(() => catsStore.YOUNGEST_CATS)
 
+const initializeCarousel = () => {
   pauseInterval()
   continueInterval()
 
@@ -98,7 +90,14 @@ onBeforeUnmount(() => {
 })
 
 const isCatActive = (cat: Cat) => {
-  return carouselCats.value.indexOf(cat) === activeIndex.value
+  return newCarouselCats.value.indexOf(cat) === activeIndex.value
+}
+
+const isCatSubactive = (cat: Cat) => {
+  return (
+    newCarouselCats.value.indexOf(cat) === activeIndex.value - 1 ||
+    newCarouselCats.value.indexOf(cat) === activeIndex.value + 1
+  )
 }
 
 const pauseInterval = () => {
@@ -121,47 +120,23 @@ const stoppingOnHover = (active: Element) => {
 
 //changing image to the right one in array
 const goingRight = () => {
-  activeIndexYoungestCats.value++
-  carouselCats.value.shift()
+  activeIndex.value++
 
-  if (activeIndexYoungestCats.value === catsStore.YOUNGEST_CATS.length - 1)
-    carouselCats.value.push(catsStore.YOUNGEST_CATS[0])
-  else if (activeIndexYoungestCats.value > catsStore.YOUNGEST_CATS.length - 1) {
-    activeIndexYoungestCats.value = 0
-    carouselCats.value.push(
-      catsStore.YOUNGEST_CATS[activeIndexYoungestCats.value + 1]
-    )
-  } else
-    carouselCats.value.push(
-      catsStore.YOUNGEST_CATS[activeIndexYoungestCats.value + 1]
-    )
-
-  if (activeIndexYoungestCats.value < 0) {
-    activeIndexYoungestCats.value = catsStore.YOUNGEST_CATS.length - 1
+  if (activeIndex.value === 3) {
+    newCarouselCats.value.push(newCarouselCats.value[0])
+    newCarouselCats.value.shift()
+    activeIndex.value = 2
   }
 }
 
 //changing image to the left one in array
 const goingLeft = () => {
-  activeIndexYoungestCats.value--
-  carouselCats.value.pop()
+  activeIndex.value--
 
-  if (activeIndexYoungestCats.value === 0)
-    carouselCats.value.unshift(
-      catsStore.YOUNGEST_CATS[catsStore.YOUNGEST_CATS.length - 1]
-    )
-  else if (activeIndexYoungestCats.value < 0) {
-    activeIndexYoungestCats.value = catsStore.YOUNGEST_CATS.length - 1
-    carouselCats.value.unshift(
-      catsStore.YOUNGEST_CATS[activeIndexYoungestCats.value - 1]
-    )
-  } else
-    carouselCats.value.unshift(
-      catsStore.YOUNGEST_CATS[activeIndexYoungestCats.value - 1]
-    )
-
-  if (activeIndexYoungestCats.value > catsStore.YOUNGEST_CATS.length - 1) {
-    activeIndexYoungestCats.value = 0
+  if (activeIndex.value === 0) {
+    newCarouselCats.value.unshift(newCarouselCats.value[3])
+    newCarouselCats.value.pop()
+    activeIndex.value = 1
   }
 }
 
