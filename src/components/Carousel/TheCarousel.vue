@@ -1,13 +1,16 @@
 <template>
   <section>
     <div class="allCats">
-      <div v-for="cat in newCarouselCats" :key="cat.id">
+      <div v-for="(cat, index) in newCarouselCats" :key="cat.id">
         <div
           class="carouselCat"
           :class="{
             activeCat: isCatActive(cat),
             subActiveCat: isCatSubactive(cat)
           }"
+          @mouseover="pauseActive(index)"
+          @mouseleave="continueActive(index)"
+          @click="openModal(index)"
         >
           <img :src="cat.image" />
           <div class="catName">
@@ -22,7 +25,7 @@
           class="iconLeft"
           @click="(direction = false), goingLeft()"
           @mouseover="pauseInterval()"
-          @mouseout="continueInterval()"
+          @mouseleave="continueInterval()"
         />
 
         <font-awesome-icon
@@ -30,7 +33,7 @@
           class="iconRight"
           @click="(direction = true), goingRight()"
           @mouseover="pauseInterval()"
-          @mouseout="continueInterval()"
+          @mouseleave="continueInterval()"
         />
       </div>
 
@@ -66,23 +69,11 @@ const direction = ref<boolean>(true)
 
 const newCarouselCats = computed(() => catsStore.YOUNGEST_CATS)
 
-const initializeCarousel = () => {
-  pauseInterval()
-  continueInterval()
-
-  setTimeout(() => {
-    const firstActive = document.querySelector(".activeCat")
-    if (firstActive !== null)
-      firstActive.addEventListener("click", () => {
-        openModal()
-      })
-  }, 500)
-}
-
 onMounted(async () => {
   await catsStore.FETCH_CATS()
 
-  initializeCarousel()
+  pauseInterval()
+  continueInterval()
 })
 
 onBeforeUnmount(() => {
@@ -100,22 +91,21 @@ const isCatSubactive = (cat: Cat) => {
   )
 }
 
+const pauseActive = (index: number) => {
+  if (index === activeIndex.value) pauseInterval()
+}
+
+const continueActive = (index: number) => {
+  pauseInterval()
+  if (index === activeIndex.value) continueInterval()
+}
+
 const pauseInterval = () => {
   clearInterval(interval.value)
 }
 
 const continueInterval = () => {
   interval.value = setInterval(displayedCats, lengthOfInterval)
-}
-
-//stopping auto changing images in carousel on hover
-const stoppingOnHover = (active: Element) => {
-  active.addEventListener("mouseover", () => {
-    pauseInterval()
-  })
-  active.addEventListener("mouseout", () => {
-    continueInterval()
-  })
 }
 
 //changing image to the right one in array
@@ -143,27 +133,13 @@ const goingLeft = () => {
 const displayedCats = () => {
   if (direction.value === true) {
     goingRight()
-
-    const active = document.querySelectorAll(".subActiveCat")[1]
-    stoppingOnHover(active)
-
-    active.addEventListener("click", () => {
-      openModal()
-    })
   } else {
     goingLeft()
-
-    const active = document.querySelectorAll(".subActiveCat")[0]
-    stoppingOnHover(active)
-
-    active.addEventListener("click", () => {
-      openModal()
-    })
   }
 }
 
-const openModal = () => {
-  showModalCat.value = true
+const openModal = (index: number) => {
+  if (index == activeIndex.value) showModalCat.value = true
 }
 
 const closeModal = () => {
